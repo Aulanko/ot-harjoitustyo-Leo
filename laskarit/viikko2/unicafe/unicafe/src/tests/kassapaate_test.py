@@ -67,9 +67,35 @@ class TestKassapaate(unittest.TestCase):
         self.kassapaate.lataa_rahaa_kortille(self.kortti,5000)
         self.assertEqual(self.kortti.saldo, 5000)
         self.assertEqual(self.kassapaate.kassassa_rahaa, 105000)
-           
 
+    def test_syo_edullisesti_kateisella(self):
+        self.kassapaate.syo_edullisesti_kateisella(500)
+        self.assertEqual(100240, self.kassapaate.kassassa_rahaa)
 
+    def test_syo_maukkaasti_kateisella(self):
+        self.kassapaate.syo_maukkaasti_kateisella(500)
+        self.assertEqual(100400, self.kassapaate.kassassa_rahaa)
+
+    def test_kassassa_rahaa_euroina(self):
+        rahat = self.kassapaate.kassassa_rahaa_euroina()
+        self.assertEqual(1000, rahat)
+
+    def test_syo_edullisesti_kortilla(self):
+        self.kassapaate.syo_edullisesti_kortilla(self.kortti)
+        self.assertEqual(9760, self.kortti.saldo)
+
+    def test_syo_maukkaasti_kortilla(self):
+        self.kassapaate.syo_maukkaasti_kortilla(self.kortti)
+        self.assertEqual(9600, self.kortti.saldo)
+
+    def test_lataa_rahaa_kortille(self):
+        self.kassapaate.lataa_rahaa_kortille(self.kortti,5000)
+        self.assertEqual(self.kortti.saldo, 15000)
+        self.assertEqual(self.kassapaate.kassassa_rahaa, 105000)
+        ei_kelpaa = self.kassapaate.lataa_rahaa_kortille(self.kortti, -200)
+        self.assertEqual(None, ei_kelpaa)
+
+    
 
 
 
