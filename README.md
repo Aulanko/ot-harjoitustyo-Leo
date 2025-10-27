@@ -8,6 +8,6 @@ Tässä on normaalia tekstiä  **boldattuna** ja tässä tekstiä *kursivoituna*
 
 ### [laskarit](./laskarit)
 
-### [vaatimusmäärittely](./documentation)
+### [vaatimusmäärittely](./documentation/vaatimusmaarittely.md)
 
 
