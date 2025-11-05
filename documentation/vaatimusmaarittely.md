@@ -11,7 +11,7 @@ Lähtökohtaisesti ei ole erilaisia käyttäjä rooleja.
 
 ## Perusversion tarjoama toiminnallisuus
 
-* Yhdistää osakkeiden hinta markkina API:hin, jossa mahdollisuus saada dataa jatkuvalla syötöllä.
+* Yhdistää osakkeiden hinta markkina API:hin, jossa mahdollisuus saada dataa mahdollisimman jatkuvalla syötöllä.
 * Käsitellä ja analysoida taloudellista dataa.
 * Visualisoida käsiteltyä dataa.
 * Päivittää visualisointeja tulleen datan mukaan.
