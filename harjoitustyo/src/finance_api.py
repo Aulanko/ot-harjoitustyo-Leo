@@ -2,27 +2,40 @@ import yfinance as yf
 import pandas as pd
 from datetime import datetime, timedelta
 
-def get_last_n_data_points(symbols, interval="1m", n_points=15):
-   
-    data = {}
-    for symbol in symbols:
-        try:
-            ticker = yf.Ticker(symbol)
-            hist = ticker.history(period="1d", interval=interval)
 
-            recent_data = hist.tail(n_points)
-            
-            data[symbol] = recent_data
+class Finance_machine():
+    def __init__(self):
+        self.symbols = ["AAPL", "GOOGL", "MSFT"] 
+        pass
 
-            
-            print(f"Last {len(recent_data)} data points for {symbol}:")
-            print(recent_data[['Open','High', 'Low','Close', 'Volume']])
-            
-        except Exception as errori:
-            print(f"Error fetching {symbol}: {errori}")
+
+    def get_last_n_data_points(self, symbols=None, interval="1m", n_points=15):
     
-    return data
+        data = {}
+        for symbol in symbols:
+            try:
+                ticker = yf.Ticker(symbol)
+                hist = ticker.history(period="1d", interval=interval)
+
+                recent_data = hist.tail(n_points)
+                
+                data[symbol] = recent_data
 
 
-stock_data = get_last_n_data_points(["AAPL", "GOOGL", "MSFT"], interval="1m", n_points=15)
-print(stock_data)
+                print(f"Last {len(recent_data)} data points for {symbol}:")
+                print(recent_data[['Open','High', 'Low','Close', 'Volume']])
+                
+            except Exception as errori:
+                print(f"Error fetching {symbol}: {errori}")
+        
+        return data
+    
+    def __str__(self):
+        stock_data = self.get_last_n_data_points(self.symbols, interval="1m", n_points=15)
+        print(stock_data)
+
+
+
+
+
+

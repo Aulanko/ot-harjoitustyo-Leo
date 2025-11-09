@@ -6,6 +6,8 @@ from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
                             QTextEdit, QSplitter)
 from PyQt6.QtCore import Qt
 
+
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
