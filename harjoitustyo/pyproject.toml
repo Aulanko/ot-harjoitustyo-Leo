@@ -8,7 +8,9 @@ authors = [
 readme = "README.md"
 requires-python = "^3.10"
 dependencies = [
-    "pyqt6 (>=6.10.0,<7.0.0)"
+    "pyqt6 (>=6.10.0,<7.0.0)",
+    "yfinance (>=0.2.66,<0.3.0)",
+    "pandas (>=2.3.3,<3.0.0)"
 ]
 
 
