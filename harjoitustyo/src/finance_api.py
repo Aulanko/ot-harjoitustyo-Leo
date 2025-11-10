@@ -3,9 +3,11 @@ import pandas as pd
 from datetime import datetime, timedelta
 
 
+
 class Finance_machine():
     def __init__(self):
         self.symbols = ["AAPL", "GOOGL", "MSFT"] 
+
         pass
 
 
@@ -23,7 +25,7 @@ class Finance_machine():
 
 
                 print(f"Last {len(recent_data)} data points for {symbol}:")
-                print(recent_data[['Open','High', 'Low','Close', 'Volume']])
+                print(recent_data[['High', 'Low','Close']])
                 
             except Exception as errori:
                 print(f"Error fetching {symbol}: {errori}")
