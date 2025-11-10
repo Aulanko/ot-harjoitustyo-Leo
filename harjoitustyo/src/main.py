@@ -1,10 +1,12 @@
 
 
 import sys
+#generoitu koodi (alla olevat 4 riviä)
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
                             QHBoxLayout, QLineEdit, QPushButton, QLabel,
                             QTextEdit, QSplitter)
 from PyQt6.QtCore import Qt
+#generoitu koodi päättyy
 
 from finance_api import Finance_machine
 
@@ -62,7 +64,7 @@ class MainWindow(QMainWindow):
 
         main_layout.addWidget(content_splitter)
 
-        self.status_label = QLabel("Ready - Enter stock symbols separated by commas")
+        self.status_label = QLabel("This is some status nice text that comes here")
         main_layout.addWidget(self.status_label)
 
     def load_data(self):
@@ -96,15 +98,20 @@ class MainWindow(QMainWindow):
         display_text = ""
         
         for symbol, stock_data in data.items():
+
+            #generoitu koodi alkaa
             display_text += f"=== {symbol} ===\n"
+            #generoitu koodi päättyy
             
             if stock_data.empty:
-                display_text += "No data available\n\n"
+                display_text += "Wasnt able to fetch properly data for this\n\n"
                 continue
             
             
             display_text += stock_data[[ 'High', 'Low', 'Close']].to_string()
+            #generoitu koodi alkaa
             display_text += "\n\n"
+            #generoitu koodi päättyy
             
            
             latest = stock_data.iloc[-1]
@@ -118,8 +125,9 @@ class MainWindow(QMainWindow):
         self.update_analysis(data)
 
     def update_analysis(self, data):
-       
+        #generoitu koodi alkaa
         analysis_text = "=== BASIC ANALYSIS ===\n\n"
+        #generoitu koodi päättyy
         
         for symbol, stock_data in data.items():
             if stock_data.empty:
