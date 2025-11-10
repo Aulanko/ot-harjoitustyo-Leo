@@ -16,6 +16,7 @@ class Finance_machine():
         data = {}
         for symbol in symbols:
             try:
+                
                 ticker = yf.Ticker(symbol)
                 hist = ticker.history(period="1d", interval=interval)
 
@@ -37,7 +38,9 @@ class Finance_machine():
         print(stock_data)
 
 
+#klassi = Finance_machine()
 
+#print(klassi.get_last_n_data_points(["AAPL", "GOOGL", "MSFT"]), "3m")
 
 
 

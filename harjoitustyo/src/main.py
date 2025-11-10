@@ -23,7 +23,7 @@ class MainWindow(QMainWindow):
 
         main_layout = QVBoxLayout(central_widget)
         
-        # Stock input layout
+        
         stock_layout = QHBoxLayout()
         stock_layout.addWidget(QLabel("Stock symbol:"))
         
@@ -34,7 +34,7 @@ class MainWindow(QMainWindow):
 
         self.load_btn = QPushButton("Load Data")
         self.load_btn.setFixedWidth(100)
-        self.load_btn.clicked.connect(self.load_data)  # Connect the button
+        self.load_btn.clicked.connect(self.load_data)  
         stock_layout.addWidget(self.load_btn)
 
         main_layout.addLayout(stock_layout)
@@ -50,9 +50,15 @@ class MainWindow(QMainWindow):
         self.analysis_panel = QTextEdit()
         self.analysis_panel.setPlaceholderText("Analysis will appear here")
 
+        self.data_visualization = QTextEdit()
+        self.data_visualization.setPlaceholderText("Data visualization will appear here")
+
         content_splitter.addWidget(self.data_display)
         content_splitter.addWidget(self.analysis_panel)
-        content_splitter.setSizes([400,400])
+        content_splitter.addWidget(self.data_visualization)
+        
+
+        content_splitter.setSizes([400,400,400])
 
         main_layout.addWidget(content_splitter)
 
@@ -80,6 +86,8 @@ class MainWindow(QMainWindow):
         
         
         self.display_data(data)
+        
+        self.data_visualization.setText("Hello World!")
         
         self.status_label.setText(f"Data loaded for {', '.join(symbols)}")
 
@@ -120,14 +128,14 @@ class MainWindow(QMainWindow):
             latest = stock_data.iloc[-1]
             first = stock_data.iloc[0]
             
-            price_change = latest['Close'] - first['Close']
-            percent_change = (price_change / first['Close']) * 100
+            price_change = latest['Close']-first['Close']
+            percent_change = (price_change/first['Close'])*100
             
-            analysis_text += f"{symbol}:\n"
-            analysis_text += f"  First: ${first['Close']:.2f}\n"
-            analysis_text += f"  Last: ${latest['Close']:.2f}\n"
-            analysis_text += f"  Change: ${price_change:.2f} ({percent_change:+.2f}%)\n"
-            analysis_text += f"  High: ${stock_data['High'].max():.2f}\n"
+            analysis_text+= f"{symbol}:\n"
+            analysis_text+=f"  First: ${first['Close']:.2f}\n"
+            analysis_text+= f"  Last: ${latest['Close']:.2f}\n"
+            analysis_text+=f"  Change: ${price_change:.2f} ({percent_change:+.2f}%)\n"
+            analysis_text+= f"  High: ${stock_data['High'].max():.2f}\n"
             analysis_text += f"  Low: ${stock_data['Low'].min():.2f}\n\n"
         
         self.analysis_panel.setText(analysis_text)
