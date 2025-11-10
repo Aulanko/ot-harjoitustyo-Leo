@@ -1,14 +1,17 @@
 
 
 import sys
-#generoitu koodi (alla olevat 4 riviä)
+#generoitu koodi (alla olevat 6 riviä)
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
                             QHBoxLayout, QLineEdit, QPushButton, QLabel,
                             QTextEdit, QSplitter)
 from PyQt6.QtCore import Qt
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
 #generoitu koodi päättyy
 
 from finance_api import Finance_machine
+from visual import Visualize
 
 
 class MainWindow(QMainWindow):
@@ -52,8 +55,8 @@ class MainWindow(QMainWindow):
         self.analysis_panel = QTextEdit()
         self.analysis_panel.setPlaceholderText("Analysis will appear here")
 
-        self.data_visualization = QTextEdit()
-        self.data_visualization.setPlaceholderText("Data visualization will appear here")
+        self.data_visualization = FigureCanvas(Figure(figsize=(10,4)))
+        #self.data_visualization.setPlaceholderText("Data visualization will appear here")
 
         content_splitter.addWidget(self.data_display)
         content_splitter.addWidget(self.analysis_panel)
@@ -89,7 +92,18 @@ class MainWindow(QMainWindow):
         
         self.display_data(data)
         
-        self.data_visualization.setText("Hello World!")
+        visual = Visualize()
+
+        first_symbol = list(data.keys())[0]
+
+        stock_data_for_plotting = data[first_symbol] 
+
+        fig = visual.make_a_graph_from_prices(stock_data_for_plotting, "High", first_symbol)
+
+        self.data_visualization.figure.clear()
+        self.data_visualization.figure = fig
+        self.data_visualization.draw()
+        
         
         self.status_label.setText(f"Data loaded for {', '.join(symbols)}")
 
