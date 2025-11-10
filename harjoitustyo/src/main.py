@@ -16,13 +16,19 @@ from visual import Visualize
 
 class MainWindow(QMainWindow):
     def __init__(self):
+
+
         super().__init__()
-        self.setWindowTitle("Financial Data App")
-        self.setGeometry(100,100,800,600)
-        self.finance_machine = Finance_machine()
         self.setup_ui()
 
+        self.setWindowTitle("Python desktop app for stocks")
+        self.setGeometry(120,100,900,700)
+        self.finance_machine = Finance_machine()
+       
+
     def setup_ui(self):
+
+        
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
 
@@ -58,17 +64,17 @@ class MainWindow(QMainWindow):
         self.data_visualization = FigureCanvas(Figure(figsize=(10,4)))
         #self.data_visualization.setPlaceholderText("Data visualization will appear here")
 
+        content_splitter.setSizes([400,400,400])
+
         content_splitter.addWidget(self.data_display)
         content_splitter.addWidget(self.analysis_panel)
         content_splitter.addWidget(self.data_visualization)
         
-
-        content_splitter.setSizes([400,400,400])
+  
 
         main_layout.addWidget(content_splitter)
 
-        self.status_label = QLabel("This is some status nice text that comes here")
-        main_layout.addWidget(self.status_label)
+        
 
     def load_data(self):
         
