@@ -1,103 +1,92 @@
-
-
 import sys
-#generoitu koodi (alla olevat 6 riviä)
-from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
-                            QHBoxLayout, QLineEdit, QPushButton, QLabel,
-                            QTextEdit, QSplitter)
-from PyQt6.QtCore import Qt
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.figure import Figure
-#generoitu koodi päättyy
 
+from PyQt6.QtCore import QSize, Qt
+from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget,QVBoxLayout, QGridLayout, QTextEdit,
+                            QPushButton)
+
+from qfluentwidgets import (NavigationInterface, NavigationItemPosition, MessageBox,
+                            isDarkTheme, setTheme, Theme,
+                            PopUpAniStackedWidget, setThemeColor)
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanva
+from matplotlib.figure import Figure
+
+from layout_colorwidget import Color
 from finance_api import Finance_machine
 from visual import Visualize
 
+#https://qfluentwidgets.com/pages/components/navigationbar/#structure
 
 class MainWindow(QMainWindow):
     def __init__(self):
-
-
         super().__init__()
-        self.setup_ui()
-
-        self.setWindowTitle("Python desktop app for stocks")
-        self.setGeometry(120,100,900,700)
+        self.setupUI()
         self.finance_machine = Finance_machine()
+        self.symbols = ["AAPL", "GOOGL", "MSFT"]
+
+        
+    def setupUI(self):
+        self.setWindowTitle("Financi App")
+
+        main_layout = QVBoxLayout()
+    
+      
+        left_widget = QWidget()
+        left_layout = QVBoxLayout(left_widget)  
+        self.navigationBar = NavigationInterface(self)
+        button = QPushButton("Load")
+        self.navigationBar.addItem(
+            routeKey="/",
+            icon="Download",
+            text="Load",
+            onClick = self.load_data
+        )
+        
+        left_layout.addWidget(self.navigationBar)
+        
        
+        right_widget = QWidget()
+        right_layout = QGridLayout(right_widget)
 
-    def setup_ui(self):
 
-        
-        central_widget = QWidget()
-        self.setCentralWidget(central_widget)
+        #right_layout.addWidget(Color("orange"), 0, 0)
+        self.basic_visual = FigureCanva(Figure(figsize=(10,4)))
+        #basic_visual = QTextEdit()
+        #basic_visual.setPlaceholderText("Stock visualization will appear here")
+        right_layout.addWidget(self.basic_visual, 0,0)
 
-        main_layout = QVBoxLayout(central_widget)
-        
-        
-        stock_layout = QHBoxLayout()
-        stock_layout.addWidget(QLabel("Stock symbol:"))
-        
-        self.stock_input = QLineEdit()
-        self.stock_input.setPlaceholderText("AAPL, GOOGL, MSFT")
-        self.stock_input.setFixedWidth(120)
-        stock_layout.addWidget(self.stock_input)
 
-        self.load_btn = QPushButton("Load Data")
-        self.load_btn.setFixedWidth(100)
-        self.load_btn.clicked.connect(self.load_data)  
-        stock_layout.addWidget(self.load_btn)
+        #right_layout.addWidget(Color("red"), 0, 1)
+        self.basic_info_text = QTextEdit()
+        self.basic_info_text.setPlaceholderText("Stock info logs will appear here")
+        right_layout.addWidget(self.basic_info_text, 0,1)
 
-        main_layout.addLayout(stock_layout)
 
+        #right_layout.addWidget(Color("green"), 1, 0)
+        basic_analysis_text = QTextEdit()
+        basic_analysis_text.setPlaceholderText("Stock analysis info will appear here")
+        right_layout.addWidget(basic_analysis_text, 1,0)
+
+
+        #right_layout.addWidget(Color("blue"), 1, 1)
        
-        content_splitter = QSplitter(Qt.Orientation.Horizontal)
-
+        main_layout.addWidget(left_widget, 1)   
+        main_layout.addWidget(right_widget, 3)   
         
-        self.data_display = QTextEdit()
-        self.data_display.setPlaceholderText("Stock data will appear here")
+        centralWidget = QWidget()
+        centralWidget.setLayout(main_layout)
+        self.setCentralWidget(centralWidget)
 
-        
-        self.analysis_panel = QTextEdit()
-        self.analysis_panel.setPlaceholderText("Analysis will appear here")
-
-        self.data_visualization = FigureCanvas(Figure(figsize=(10,4)))
-        #self.data_visualization.setPlaceholderText("Data visualization will appear here")
-
-        content_splitter.setSizes([400,400,400])
-
-        content_splitter.addWidget(self.data_display)
-        content_splitter.addWidget(self.analysis_panel)
-        content_splitter.addWidget(self.data_visualization)
-        
-  
-
-        main_layout.addWidget(content_splitter)
-
-        
-
+    
     def load_data(self):
-        
-        symbol_text = self.stock_input.text().strip()
-        
-        if not symbol_text:
-            symbols = self.finance_machine.symbols  
-        else:
-           
-            symbols = [s.strip().upper() for s in symbol_text.split(',')]
-        
-        #self.status_label.setText(f"Loading data for {', '.join(symbols)}...")
-        
-        
+
         data = self.finance_machine.get_last_n_data_points(
-            symbols=symbols, 
+            symbols=self.symbols,
             interval="1m", 
             n_points=15
         )
-        
-        
-        self.display_data(data)
-        
+
+        self.construct_basic_info_text(data)
+
         visual = Visualize()
 
         first_symbol = list(data.keys())[0]
@@ -106,77 +95,36 @@ class MainWindow(QMainWindow):
 
         fig = visual.make_a_graph_from_prices(stock_data_for_plotting, "High", first_symbol)
 
-        self.data_visualization.figure.clear()
-        self.data_visualization.figure = fig
-        self.data_visualization.draw()
-        
-        
-        #self.status_label.setText(f"Data loaded for {', '.join(symbols)}")
+        self.basic_visual.figure.clear()
+        self.basic_visual.figure = fig
+        self.basic_visual.draw()
 
-    def display_data(self, data):
-       
-        display_text = ""
-        
-        for symbol, stock_data in data.items():
 
-            #generoitu koodi alkaa
-            display_text += f"=== {symbol} ===\n"
-            #generoitu koodi päättyy
-            
-            if stock_data.empty:
-                display_text += "Wasnt able to fetch properly data for this\n\n"
-                continue
-            
-            
-            display_text += stock_data[[ 'High', 'Low', 'Close']].to_string()
-            #generoitu koodi alkaa
-            display_text += "\n\n"
-            #generoitu koodi päättyy
-            
-           
-            latest = stock_data.iloc[-1]
-            display_text += f"Latest Close: ${latest['Close']:.2f}\n"
-          
-            display_text += f"Data Points: {len(stock_data)}\n\n"
-        
-        self.data_display.setText(display_text)
-        
-       
-        self.update_analysis(data)
 
-    def update_analysis(self, data):
-        #generoitu koodi alkaa
-        analysis_text = "=== BASIC ANALYSIS ===\n\n"
-        #generoitu koodi päättyy
-        
-        for symbol, stock_data in data.items():
-            if stock_data.empty:
-                continue
-                
-            latest = stock_data.iloc[-1]
-            first = stock_data.iloc[0]
-            
-            price_change = latest['Close']-first['Close']
-            percent_change = (price_change/first['Close'])*100
-            
-            analysis_text+= f"{symbol}:\n"
-            analysis_text+=f"  First: ${first['Close']:.2f}\n"
-            analysis_text+= f"  Last: ${latest['Close']:.2f}\n"
-            analysis_text+=f"  Change: ${price_change:.2f} ({percent_change:+.2f}%)\n"
-            analysis_text+= f"  High: ${stock_data['High'].max():.2f}\n"
-            analysis_text += f"  Low: ${stock_data['Low'].min():.2f}\n\n"
-        
-        self.analysis_panel.setText(analysis_text)
+        pass
 
-        
+    def construct_basic_info_text(self, data):
+        texti = ""
+        for symbol, stockData in data.items():
+            texti +=f"   stock price data for {symbol}   \n                "
 
-    
+            texti += stockData[['High', 'Low', 'Close']].to_string()
+            texti += "\n\n"
+            latest = stockData.iloc[-1]
+            texti += f"latest close: {latest['Close']} \n"
+            texti += f"Data points: {len(stockData)}\n\n"
+
+        self.basic_info_text.setText(texti)
+
+
+
+   
 
 def main():
     app = QApplication(sys.argv)
     window= MainWindow()
     window.show()
-    sys.exit(app.exec())
+    app.exec()
 
 if __name__=="__main__":
     main()
