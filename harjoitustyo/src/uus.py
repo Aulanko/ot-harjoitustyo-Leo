@@ -1,7 +1,8 @@
 import sys
 
 from PyQt6.QtCore import QSize, Qt
-from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget,QVBoxLayout, QGridLayout, QTextEdit
+from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget,QVBoxLayout, QGridLayout, QTextEdit,
+                            QPushButton)
 
 from qfluentwidgets import (NavigationInterface, NavigationItemPosition, MessageBox,
                             isDarkTheme, setTheme, Theme,
@@ -29,8 +30,14 @@ class MainWindow(QMainWindow):
         left_widget = QWidget()
         left_layout = QVBoxLayout(left_widget)  
         self.navigationBar = NavigationInterface(self)
-
-
+        button = QPushButton("Load")
+        self.navigationBar.addItem(
+            routeKey="/",
+            icon="Download",
+            text="Load",
+            onClick = self.load_data
+        )
+        
         left_layout.addWidget(self.navigationBar)
         
        
@@ -45,9 +52,9 @@ class MainWindow(QMainWindow):
 
 
         #right_layout.addWidget(Color("red"), 0, 1)
-        basic_info_text = QTextEdit()
-        basic_info_text.setPlaceholderText("Stock info logs will appear here")
-        right_layout.addWidget(basic_info_text, 0,1)
+        self.basic_info_text = QTextEdit()
+        self.basic_info_text.setPlaceholderText("Stock info logs will appear here")
+        right_layout.addWidget(self.basic_info_text, 0,1)
 
 
         #right_layout.addWidget(Color("green"), 1, 0)
@@ -74,6 +81,8 @@ class MainWindow(QMainWindow):
             n_points=15
         )
 
+        self.construct_basic_info_text(data)
+
 
 
 
@@ -82,13 +91,13 @@ class MainWindow(QMainWindow):
     def construct_basic_info_text(self, data):
         texti = ""
         for symbol, stockData in data.items():
-            texti =f"   stock price data for {symbol}   \n"
+            texti +=f"   stock price data for {symbol}   \n                "
 
-            texti += stockData[[ 'High', 'Low', 'Close']].to_string()
-            text += "\n\n"
+            texti += stockData[['High', 'Low', 'Close']].to_string()
+            texti += "\n\n"
             latest = stockData.iloc[-1]
-            texti += f"latest close: ${latest['Close']} \n"
-            texti += f"Data points: ${len(stockData)}\n"
+            texti += f"latest close: {latest['Close']} \n"
+            texti += f"Data points: {len(stockData)}\n\n"
 
         self.basic_info_text.setText(texti)
 
@@ -108,3 +117,14 @@ window.show()
 
 app.exec()
 
+
+   
+
+def uus():
+    app = QApplication(sys.argv)
+    window= MainWindow()
+    window.show()
+    app.exec()
+
+if __name__=="__uus__":
+    uus()
