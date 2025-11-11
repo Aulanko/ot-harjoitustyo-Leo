@@ -7,9 +7,12 @@ from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget,QVBoxLayout, QGr
 from qfluentwidgets import (NavigationInterface, NavigationItemPosition, MessageBox,
                             isDarkTheme, setTheme, Theme,
                             PopUpAniStackedWidget, setThemeColor)
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanva
+from matplotlib.figure import Figure
 
 from layout_colorwidget import Color
 from finance_api import Finance_machine
+from visual import Visualize
 
 #https://qfluentwidgets.com/pages/components/navigationbar/#structure
 
@@ -46,9 +49,10 @@ class MainWindow(QMainWindow):
 
 
         #right_layout.addWidget(Color("orange"), 0, 0)
-        basic_visual = QTextEdit()
-        basic_visual.setPlaceholderText("Stock visualization will appear here")
-        right_layout.addWidget(basic_visual, 0,0)
+        self.basic_visual = FigureCanva(Figure(figsize=(10,4)))
+        #basic_visual = QTextEdit()
+        #basic_visual.setPlaceholderText("Stock visualization will appear here")
+        right_layout.addWidget(self.basic_visual, 0,0)
 
 
         #right_layout.addWidget(Color("red"), 0, 1)
@@ -83,6 +87,17 @@ class MainWindow(QMainWindow):
 
         self.construct_basic_info_text(data)
 
+        visual = Visualize()
+
+        first_symbol = list(data.keys())[0]
+
+        stock_data_for_plotting = data[first_symbol] 
+
+        fig = visual.make_a_graph_from_prices(stock_data_for_plotting, "High", first_symbol)
+
+        self.basic_visual.figure.clear()
+        self.basic_visual.figure = fig
+        self.basic_visual.draw()
 
 
 

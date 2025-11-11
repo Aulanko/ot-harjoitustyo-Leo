@@ -25,9 +25,9 @@ class Visualize():
 
        
 
-        plt.title("Price graph from stock data")
+        plt.title("Price graph from the first company of symbols list (Apple)")
 
-        plt.xlabel("Time")
+        plt.xlabel("Time (-5 hours from englan greenwitch)")
 
         plt.ylabel("price")
 
