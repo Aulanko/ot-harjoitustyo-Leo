@@ -86,7 +86,7 @@ class MainWindow(QMainWindow):
            
             symbols = [s.strip().upper() for s in symbol_text.split(',')]
         
-        self.status_label.setText(f"Loading data for {', '.join(symbols)}...")
+        #self.status_label.setText(f"Loading data for {', '.join(symbols)}...")
         
         
         data = self.finance_machine.get_last_n_data_points(
@@ -111,7 +111,7 @@ class MainWindow(QMainWindow):
         self.data_visualization.draw()
         
         
-        self.status_label.setText(f"Data loaded for {', '.join(symbols)}")
+        #self.status_label.setText(f"Data loaded for {', '.join(symbols)}")
 
     def display_data(self, data):
        
