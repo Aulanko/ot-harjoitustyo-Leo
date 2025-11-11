@@ -1,4 +1,18 @@
 
+**Starting the application**
+
+*(Make sure you have python and poetry installed)*
+
+1. copy the project
+2. go to harjoitustyo
+3. poetry install
+4. poetry run python src/main.py
+
+
+
+
+
+
 
 High -> The highest price that the stock reached during the time period
 
