@@ -14,6 +14,7 @@
 
 
 
+
 High -> The highest price that the stock reached during the time period
 
 Low -> The lowest price for the tock during the time period
