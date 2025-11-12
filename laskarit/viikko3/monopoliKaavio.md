@@ -9,8 +9,8 @@
     Ruutu "1" -- "1" Ruutu : seuraava
     Ruutu "1" -- "1" Aloitusruutu
     Ruutu "1" -- "11" Vankila
-    Ruutu "1" -- "6, 23,37" Sattuma/Yhteismaa
-    Ruutu "1" -- "6,16,26,36, 13, 28" Asemat/laitokset
+    Ruutu "1" -- "6, 23,37" Sattuma Tai Yhteismaa
+    Ruutu "1" -- "6,16,26,36, 13, 28" Asemat ja laitokset
 
 
 
