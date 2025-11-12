@@ -12,4 +12,6 @@ Tässä on normaalia tekstiä  **boldattuna** ja tässä tekstiä *kursivoituna*
 
 ### [tuntikirjanpito](./documentation/tuntikirjanpito.md)
 
+### [changelog](./documentation/changelog.md)
+
 
