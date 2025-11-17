@@ -116,6 +116,9 @@ class MainWindow(QMainWindow):
 
         self.basic_info_text.setText(texti)
 
+    def construct_basic_analysis(self, data):
+        pass
+
 
 
    
