@@ -6,12 +6,14 @@
 
 Tässä on normaalia tekstiä  **boldattuna** ja tässä tekstiä *kursivoituna* 
 
-### [laskarit](./laskarit)
+### [Laskarit](./laskarit)
 
-### [vaatimusmäärittely](./documentation/vaatimusmaarittely.md)
+### [Käyttöohje](./harjoitustyo/README.md)
 
-### [tuntikirjanpito](./documentation/tuntikirjanpito.md)
+### [Vaatimusmäärittely](./documentation/vaatimusmaarittely.md)
 
-### [changelog](./documentation/changelog.md)
+### [Tuntikirjanpito](./documentation/tuntikirjanpito.md)
+
+### [Changelog](./documentation/changelog.md)
 
 
