@@ -13,6 +13,7 @@ from matplotlib.figure import Figure
 from layout_colorwidget import Color
 from finance_api import Finance_machine
 from visual import Visualize
+from analyze import Analyze
 
 #https://qfluentwidgets.com/pages/components/navigationbar/#structure
 
@@ -62,9 +63,9 @@ class MainWindow(QMainWindow):
 
 
         #right_layout.addWidget(Color("green"), 1, 0)
-        basic_analysis_text = QTextEdit()
-        basic_analysis_text.setPlaceholderText("Stock analysis info will appear here")
-        right_layout.addWidget(basic_analysis_text, 1,0)
+        self.basic_analysis_text = QTextEdit()
+        self.basic_analysis_text.setPlaceholderText("Stock analysis info will appear here")
+        right_layout.addWidget(self.basic_analysis_text, 1,0)
 
 
         #right_layout.addWidget(Color("blue"), 1, 1)
@@ -86,6 +87,8 @@ class MainWindow(QMainWindow):
         )
 
         self.construct_basic_info_text(data)
+
+        self.construct_basic_analysis(data)
 
         visual = Visualize()
 
@@ -117,6 +120,27 @@ class MainWindow(QMainWindow):
         self.basic_info_text.setText(texti)
 
     def construct_basic_analysis(self, data):
+
+        
+
+        analyzer = Analyze()
+      
+
+        texti = ""
+        for symbol, stock_data_for_plotting in data.items():
+            mean = analyzer.mean(stock_data_for_plotting)
+            minimum = analyzer.minimum(stock_data_for_plotting)
+            maximum = analyzer.maximum(stock_data_for_plotting)
+
+            texti +=f"stock price data analysis for {symbol}   \n         "
+            texti += "\n\n"
+            texti += f"mean: {mean} \n"
+            texti +=f"minimum: {minimum}\n"
+            texti += f"maximum: {maximum} \n\n"
+        
+        self.basic_analysis_text.setText(texti)
+
+        
         pass
 
 

@@ -10,7 +10,7 @@ class Analyze():
 
         mean_value_from_high = statistics.mean(stock_data_for_plotting["High"])
         mean_value_from_low = statistics.mean(stock_data_for_plotting["Low"])
-        true_mean = statistics.mean(mean_value_from_high, mean_value_from_low)
+        true_mean = statistics.mean([mean_value_from_high, mean_value_from_low])
 
         return true_mean
     
