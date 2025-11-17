@@ -23,7 +23,7 @@ class Analyze():
     
     def correlation(self, first_stoock_plot_data, second_stock_plot_data):
         correlation_matrix =np.corrcoef(first_stoock_plot_data["Close"], second_stock_plot_data["Close"])
-        correlation = correlation_matrix[1]
+        correlation = correlation_matrix[0,1]
         return correlation
     
 
