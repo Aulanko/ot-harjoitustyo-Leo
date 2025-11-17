@@ -10,5 +10,12 @@
 - Testattu sovelluksen datan tarkkuuta, ja todettu olevan oikeassa.
 
 
+## Viikko 4
+
+- Käyttäjä voi nyt nähdä myös analyysi tietoja yrityksistä, jotka ladattiin load-napista.
+- Luotu Analyze-luokka, joka vastaa datan analysoinnista ja suuremmista matemaattisista operaatioista, joita tehdään datalle.
+- Yhdistetty lataustoiminnallisuuden näkyvyys käyttäjän käyttöliittymänäkymään.
+- Tehty testejä Analyze-luokalle.
+
 
 
