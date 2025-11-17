@@ -9,3 +9,5 @@
 | 10.11. | 9.5h    | Erittäin paljon perehtymistä tarvittavien kirjastojen dokumentaatioon, sekä niiden implementoimiseen haluaman toiminnallisuuden lisäämiseksi aplikaatioon |
 | 11.11. | 4.5h    | Koodin refaktorointia, ja muokkaamista hieman paremmaksi |
 | 12.11. | 5.5h    | Koodin refaktorointia, sekä tämän viikon kaikkien harjoitustyötehtävien tekeminen liittyen ohjelmisto projektiin kokonaan. (pytestit, invoke-komennot, coverage-raportit, jne.) |
+| 17.11. | 4.5h    | Uuden analyysi toiminnallisuuden kehittämistä, sekä testien tekeminen sille + saada se näkymään käyttäjä näkymässä jollakin tavalla |
+
