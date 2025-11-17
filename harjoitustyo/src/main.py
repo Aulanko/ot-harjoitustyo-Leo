@@ -137,6 +137,7 @@ class MainWindow(QMainWindow):
             texti += f"mean: {mean} \n"
             texti +=f"minimum: {minimum}\n"
             texti += f"maximum: {maximum} \n\n"
+            print(stock_data_for_plotting["High"])
         
         self.basic_analysis_text.setText(texti)
 
