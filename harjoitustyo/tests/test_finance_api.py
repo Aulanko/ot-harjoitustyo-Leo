@@ -20,4 +20,6 @@ class Test_Finance_machine(unittest.TestCase):
         self.assertIsInstance(data, dict)
         self.assertEqual(len(self.symbols), len(data))
 
+    
+
 

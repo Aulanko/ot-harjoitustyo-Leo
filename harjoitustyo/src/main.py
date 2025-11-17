@@ -10,7 +10,7 @@ from qfluentwidgets import (NavigationInterface, NavigationItemPosition, Message
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanva
 from matplotlib.figure import Figure
 
-from layout_colorwidget import Color
+
 from finance_api import Finance_machine
 from visual import Visualize
 from analyze import Analyze
