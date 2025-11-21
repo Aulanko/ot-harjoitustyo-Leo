@@ -3,12 +3,12 @@ import matplotlib.pyplot as plt
 
 class Visualize():
     def __init__(self):
-        
+
         pass
 
-    def make_a_graph_from_prices(self, stock_data,column_to_get_data, symbol):
-        
-        plt.figure(figsize=(30,6))
+    def make_a_graph_from_prices(self, stock_data, column_to_get_data, symbol):
+
+        plt.figure(figsize=(30, 6))
         what_times = [str(row).split(' ')[1][3:5] for row in stock_data.index]
 
         values = stock_data[column_to_get_data].values
@@ -20,10 +20,8 @@ class Visualize():
 
         price_ranger = max_price-min_price
 
-        plt.ylim(min_price - price_ranger * 0.1, max_price + price_ranger * 0.1)
-
-
-       
+        plt.ylim(min_price - price_ranger * 0.1,
+                 max_price + price_ranger * 0.1)
 
         plt.title("Price graph from the first company of symbols list (Apple)")
 
@@ -31,17 +29,9 @@ class Visualize():
 
         plt.ylabel("price")
 
+        return plt.gcf()
 
-
-
-        return plt.gcf()  
-    
     def display_visualization(self, data):
         for symbol, stock_data in data.items():
             if stock_data.empty:
                 return
-            
-
-
-
-
