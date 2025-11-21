@@ -21,7 +21,7 @@ class StockData():
     close: float
     volume: int=0
 
-    @classmethod
+   
     def to_dict(self)->Dict:
         return{
             "symbol" : self.symbol,
@@ -32,6 +32,38 @@ class StockData():
             "volume": self.volume
         }
     
+    @classmethod
+    def create_stock_data_from_dict(cls, data:Dict)->Dict:
+        data = data.copy()
+        if isinstance(data["timestamp"],str):
+            data["timestamp"] = datetime.fromisoformat(data["timestamp"])
+        
+        return cls(**data)
+    
+
+    def price_change(self, previous_close: float)->float:
+        return self.close - previous_close
+    
+    def price_change_percent(self, previous_close:float)->float:
+        ans = self.close-previous_close
+        return (ans/self.close)*100
+    
+
+@dataclass
+class StockSummary():
+
+    symbol : str
+    timestart : datetime
+    time_end: datetime
+    high: float
+    low: float
+    volume_avg: float
+    data_points: int=0
+
+
+
+
+
 
 
 
