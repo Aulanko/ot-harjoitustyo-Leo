@@ -10,4 +10,6 @@
 | 11.11. | 4.5h    | Koodin refaktorointia, ja muokkaamista hieman paremmaksi |
 | 12.11. | 5.5h    | Koodin refaktorointia, sekä tämän viikon kaikkien harjoitustyötehtävien tekeminen liittyen ohjelmisto projektiin kokonaan. (pytestit, invoke-komennot, coverage-raportit, jne.) |
 | 17.11. | 6h    | Uuden analyysi toiminnallisuuden kehittämistä, sekä testien tekeminen sille + saada se näkymään käyttäjä näkymässä jollakin tavalla |
+| 20.11. | 9h    | Opiskeltu hyviä ohjelmisto insinööri käytäntöjä, ja paljon python decorattoreista, kirjastoista, metodeista, ohjelmisto arkkitehtuuria sekä koodia muokattu/listätty uusia rakenteita tulevalle |
+| 21.11. | 7h    | Uusien ohjelman toiminnallisuuksien rakentamista tulevalle. Esim osake datan käsittelyyn tehty tiedosto stock_repo.py |
 
