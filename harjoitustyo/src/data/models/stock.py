@@ -84,7 +84,15 @@ class DataFactory():
             volume=yf_data["volume"].iloc[-1]
         )
     
+    @staticmethod
+    def stock_data_summary(symbol:str, data_points: list[StockData] )->StockSummary:
+
+        pass
+
     
+
+    
+
 
 
 
