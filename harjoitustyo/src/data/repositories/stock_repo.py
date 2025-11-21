@@ -161,6 +161,7 @@ class StockRepository(BaseStockClass):
         if cached_data:
             try:
                 cache_dict = json.loads(cached_data)
+                cache_dict["timestamp"] =datetime.fromisoformat(cache_dict["timestamp"])
                 return StockData(**cache_dict)
             except Exception as e:
                 raise SpotStockDataError(symbol, f"error getting stock data from cache: {e}")
