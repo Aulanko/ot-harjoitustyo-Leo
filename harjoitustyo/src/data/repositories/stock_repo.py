@@ -13,6 +13,8 @@ import sqlite3
 import json
 from datetime import datetime
 
+from models.stock import StockSummary, DataFactory
+
 
 
 class SpotStockDataError(Exception):
@@ -161,6 +163,7 @@ class StockRepository(BaseStockClass):
         if cached_data:
             try:
                 cache_dict = json.loads(cached_data)
+
                 cache_dict["timestamp"] =datetime.fromisoformat(cache_dict["timestamp"])
                 return StockData(**cache_dict)
             except Exception as e:
@@ -173,17 +176,18 @@ class StockRepository(BaseStockClass):
                 self.logger.warning(f"No stock data available for symbol: {symbol}")
                 return None
            
-            last = time_frame.iloc[-1]
+            #last = time_frame.iloc[-1]
 
+            stock_data = DataFactory(symbol, time_frame)
 
-            stock_data = StockData(  
-                symbol=symbol,
-                timestamp= time_frame.iloc[-1].to_pydatetime(),
-                high= float(last["High"]),
-                low= float(last["Low"]),
-                close= float(last["Close"]),
-                volume= int(last["Volume"])
-            )
+        #    stock_data = StockData(  
+         #       symbol=symbol,
+          #      timestamp= time_frame.iloc[-1].to_pydatetime(),
+           #     high= float(last["High"]),
+            #    low= float(last["Low"]),
+             #   close= float(last["Close"]),
+              #  volume= int(last["Volume"])
+            #)
 
 
             try:

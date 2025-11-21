@@ -1,11 +1,9 @@
 
-import logging
 
-from typing import Dict,List,Optional,Tuple, Optional
+from typing import Dict
 from dataclasses import dataclass
 
-import sqlite3
-import json
+
 from datetime import datetime
 
 
@@ -70,8 +68,24 @@ class StockSummary():
         average = (self.high+self.low)/2
         return (self.price_change_range/average)*100
     
+
+
+@dataclass
+class DataFactory():   
+
+    @staticmethod
+    def create_stock_data_from_yf(symbol:str, yf_data)->StockData:
+        return StockData(
+            symbol=symbol,
+            timestamp=yf_data.index[-1].to_pydatetime(),
+            high=yf_data["High"].iloc[-1],
+            low=yf_data["Low"].iloc[-1],
+            close=yf_data["Close"].iloc[-1],
+            volume=yf_data["volume"].iloc[-1]
+        )
     
     
+
 
 
 
