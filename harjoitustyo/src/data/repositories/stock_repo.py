@@ -176,18 +176,8 @@ class StockRepository(BaseStockClass):
                 self.logger.warning(f"No stock data available for symbol: {symbol}")
                 return None
            
-            #last = time_frame.iloc[-1]
 
             stock_data = DataFactory(symbol, time_frame)
-
-        #    stock_data = StockData(  
-         #       symbol=symbol,
-          #      timestamp= time_frame.iloc[-1].to_pydatetime(),
-           #     high= float(last["High"]),
-            #    low= float(last["Low"]),
-             #   close= float(last["Close"]),
-              #  volume= int(last["Volume"])
-            #)
 
 
             try:
