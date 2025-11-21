@@ -61,6 +61,21 @@ class StockSummary():
     data_points: int=0
 
 
+    @property
+    def price_change_range(self):
+        return self.high-self.low
+    
+    @property
+    def volatility(self):
+        average = (self.high+self.low)/2
+        return (self.price_change_range/average)*100
+    
+    
+    
+
+
+
+
 
 
 
