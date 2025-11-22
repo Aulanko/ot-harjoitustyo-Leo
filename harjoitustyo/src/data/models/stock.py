@@ -11,7 +11,7 @@ from datetime import datetime
 
 
 @dataclass
-class StockData(): 
+class StockData: 
     symbol : str
     timestamp : datetime
     high: float
@@ -23,15 +23,27 @@ class StockData():
     def to_dict(self)->Dict:
         return{
             "symbol" : self.symbol,
-            "timestamp" : self.timestamp,
+            "timestamp" : self.timestamp.isoformat(),
             "high": self.high,
             "low": self.low,
             "close": self.close,
             "volume": self.volume
         }
     
+    def __post_init__(self):
+        self.validate()
+
+    def validate(self):
+        if self.high<self.low:
+            raise ValueError(f"How can the lowest value be more than the highest value \
+                             Highest: {self.high}, Lowest: {self.low}")
+        
+        if self.volume<0:
+            raise ValueError(f"Volume canot be negative. Volume: {self.volume}")
+        
+    
     @classmethod
-    def create_stock_data_from_dict(cls, data:Dict)->Dict:
+    def create_stock_data_from_dict(cls, data:Dict)->"StockData":
         data = data.copy()
         if isinstance(data["timestamp"],str):
             data["timestamp"] = datetime.fromisoformat(data["timestamp"])
@@ -39,16 +51,21 @@ class StockData():
         return cls(**data)
     
 
+    
+
     def price_change(self, previous_close: float)->float:
         return self.close - previous_close
     
     def price_change_percent(self, previous_close:float)->float:
+        if previous_close==0:
+            return 0.0
         ans = self.close-previous_close
-        return (ans/self.close)*100
+
+        return (ans/previous_close)*100
     
 
 @dataclass
-class StockSummary():
+class StockSummary:
 
     symbol : str
     timestart : datetime
@@ -66,6 +83,8 @@ class StockSummary():
     @property
     def volatility(self):
         average = (self.high+self.low)/2
+        if average==0:
+            return 0
         return (self.price_change_range/average)*100
     
 
@@ -81,12 +100,15 @@ class DataFactory():
             high=yf_data["High"].iloc[-1],
             low=yf_data["Low"].iloc[-1],
             close=yf_data["Close"].iloc[-1],
-            volume=yf_data["volume"].iloc[-1]
+            volume=yf_data["Volume"].iloc[-1]
         )
     
     @staticmethod
     def stock_data_summary(symbol:str, data_points: list[StockData] )->StockSummary:
 
+        if not data_points:
+            raise ValueError(f"No data points were provided to the stock_data_summary static method, \
+            symbol: {symbol}")
         high = [dp.high for dp in data_points]
         low = [dp.low for dp in data_points]
         volume = [dp.volume for dp in data_points]
@@ -95,8 +117,8 @@ class DataFactory():
                 symbol= symbol,
                 timestart = min(dp.timestamp for dp in data_points),
                 time_end= max(dp.timestamp for dp in data_points),
-                high= high,
-                low = low,
+                high= max(high),
+                low = min(low),
                 volume_avg = (sum(volume))/len(volume),
                 data_points= len(data_points)
         )
