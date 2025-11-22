@@ -87,7 +87,20 @@ class DataFactory():
     @staticmethod
     def stock_data_summary(symbol:str, data_points: list[StockData] )->StockSummary:
 
-        pass
+        high = [dp.high for dp in data_points]
+        low = [dp.low for dp in data_points]
+        volume = [dp.volume for dp in data_points]
+
+        return StockSummary(
+                symbol= symbol,
+                timestart = min(dp.timestamp for dp in data_points),
+                time_end= max(dp.timestamp for dp in data_points),
+                high= high,
+                low = low,
+                volume_avg = (sum(volume))/len(volume),
+                data_points= len(data_points)
+        )
+        
 
     
 
