@@ -6,6 +6,7 @@ import sys
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 
+from services.analysis.analyzer import StockAnalysis
 
 
 class DataTickerWidget(QLabel):
@@ -144,6 +145,16 @@ class MainWindow(QMainWindow):
         pass
     
 
+    def refresh_data(self):
+        try:
+            current_data = StockAnalysis.get_current_data_for_multiple_symbols(self.CurrentSymbols)
+            self.update_data_ticker_widgets()
+        except Exception as e:
+            self.logger.warning(f"error on refresh_data: {e}")
+    
+    def update_data_ticker_widgets(self):
+
+        pass
 
 
 
