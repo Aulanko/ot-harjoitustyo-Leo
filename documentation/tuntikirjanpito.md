@@ -12,4 +12,5 @@
 | 17.11. | 6h    | Uuden analyysi toiminnallisuuden kehittämistä, sekä testien tekeminen sille + saada se näkymään käyttäjä näkymässä jollakin tavalla |
 | 20.11. | 9h    | Opiskeltu hyviä ohjelmisto insinööri käytäntöjä, ja paljon python decorattoreista, kirjastoista, metodeista, ohjelmisto arkkitehtuuria sekä koodia muokattu/listätty uusia rakenteita tulevalle |
 | 21.11. | 7h    | Uusien ohjelman toiminnallisuuksien rakentamista tulevalle. Esim osake datan käsittelyyn tehty tiedosto stock_repo.py |
+| 23.11. | 6.5h    | Uuden käyttöliittymän tekemistä + aikaisemman "uuden, parempien ohjelmisto käytäntöjen" koodin yhteen sovittamista ja rakentamista |
 
