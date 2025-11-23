@@ -4,11 +4,18 @@ from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,QHB
 import sys
 
 
+
+
+class DataTickerWidget(QLabel):
+    pass
+
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-
+        self.CurrentSymbols = ["AAPL","GOOGL"]
         self.setUpUI()
+        
 
         
 
@@ -21,7 +28,10 @@ class MainWindow(QMainWindow):
         center_widget.setLayout(main_layout)
 
         left_panel = self.create_left_panel()
-        main_layout.addWidget(left_panel)
+        main_layout.addWidget(left_panel, 1)
+
+        right_panel = self.create_right_panel()
+        main_layout.addWidget(right_panel)
 
 
 
@@ -56,6 +66,20 @@ class MainWindow(QMainWindow):
         layout.addWidget(analyze_button)
 
         return panel
+    
+    def create_right_panel(self):
+        panel = QWidget()
+        layout = QGridLayout()
+        panel.setLayout(layout)
+
+        self.data_ticker_widgets = {}
+        for i, symbol in enumerate(self.CurrentSymbols):
+            print("koira")
+
+
+
+
+        pass
     
 
 
