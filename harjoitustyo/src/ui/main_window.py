@@ -122,6 +122,16 @@ class MainWindow(QMainWindow):
         self.PriceChart = FigureCanvas(Figure(figsize=(10,4)))
         layout.addWidget(self.PriceChart,1,0,1,len(self.CurrentSymbols))
 
+        self.data_Display = QTextEdit()
+        self.data_Display.setPlaceholderText("Stock Data shall appear..")
+        layout.addWidget(self.data_Display,2,0,1,2)
+
+        self.analysis_Display = QTextEdit()
+        self.analysis_Display.setPlaceholderText("Analysis Data shall appear..")
+        layout.addWidget(self.analysis_Display,2,2,1,2)
+
+
+
         return panel
 
 
