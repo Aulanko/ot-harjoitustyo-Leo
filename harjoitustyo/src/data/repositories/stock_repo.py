@@ -177,7 +177,7 @@ class StockRepository(BaseStockClass):
                 return None
            
 
-            stock_data = DataFactory(symbol, time_frame)
+            stock_data = DataFactory.create_stock_data_from_yf(symbol, time_frame)
 
 
             try:
