@@ -8,7 +8,7 @@ import pandas as pd
 
 class StockAnalysis:
 
-    def __ini__(self, repo:StockRepository):
+    def __init__(self, repo:StockRepository):
         self.repo = repo
         self.logger = logging.getLogger(__name__)
 

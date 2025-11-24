@@ -4,3 +4,5 @@ __pycache__
 htmlcov
 
 src/ei_kaytossa_vanha.py
+
+stocks.db

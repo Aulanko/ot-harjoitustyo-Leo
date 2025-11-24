@@ -6,9 +6,11 @@ import sys
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from typing import Dict, Optional
+import logging
 
 from analysis.analyzer import StockAnalysis
 from models.stock import StockData, StockSummary
+from repositories.stock_repo import StockRepository
 
 
 class DataTickerWidget(QLabel):
@@ -24,21 +26,16 @@ class DataTickerWidget(QLabel):
         self.setUpUI()
 
     def setUpUI(self):
-        if self.change >=0:
-            self.color ="green"
-            self.sign="+"
-        else:
-            self.color="red"
-            self.sign ="-"
+        
 
 
         layout = QVBoxLayout()
         self.setLayout(layout)
      
         self.symbol_label = QLabel(f"{self.symbol}")
-        self.price_label = QLabel(f"${self.price}")
-        self.change_label = QLabel(f"{self.sign}{abs(self.change)}%")
-        self.change_label.setStyleSheet(f"color: {self.color}")
+        self.price_label = QLabel(f"{self.price}$")
+        self.change_label = QLabel()
+        
 
         layout.addWidget(self.symbol_label)
         layout.addWidget(self.price_label)
@@ -46,6 +43,22 @@ class DataTickerWidget(QLabel):
 
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
+        
+    def update_data(self, price:float, change:float):
+        self.price = price
+        self.change = change
+
+        if self.change >=0:
+            self.color ="green"
+            self.sign="+"
+        else:
+            self.color="red"
+            self.sign ="-"
+
+        self.price_label.setText(f"{price}$")
+        self.change_label.setText(f"{self.sign}{abs(self.change)}%")
+        self.change_label.setStyleSheet(f"color: {self.color}")
+        self.setUpUI()
 
 
 
@@ -60,6 +73,9 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.CurrentSymbols = ["AAPL","GOOGL"]
         self.setUpUI()
+        self.logger = logging.getLogger(__name__)
+        self.repo = StockRepository()
+        self.analyzer = StockAnalysis(self.repo)
         
 
         
@@ -78,10 +94,7 @@ class MainWindow(QMainWindow):
         right_panel = self.create_right_panel()
         main_layout.addWidget(right_panel)
 
-    def update_data(self, price:float, change:float):
-        self.price = price
-        self.change = change
-        self.setUpUI()
+    
 
     
 
@@ -109,7 +122,7 @@ class MainWindow(QMainWindow):
         layout.addLayout(symbol_layout)
 
         analyze_button = QPushButton("Analyze")
-        #analyze_button.clicked.connect()
+        analyze_button.clicked.connect(self.refresh_data)
 
         layout.addWidget(analyze_button)
 
@@ -153,8 +166,10 @@ class MainWindow(QMainWindow):
 
     def refresh_data(self):
         try:
-            current_data = StockAnalysis.get_current_data_for_multiple_symbols(self.CurrentSymbols)
-            self.update_data_ticker_widgets()
+            current_data = self.analyzer.get_current_data_for_multiple_symbols(self.CurrentSymbols)
+            if current_data:
+                self.update_data_ticker_widgets(current_data)
+                self.update_displayed_data(current_data)
         except Exception as e:
             self.logger.warning(f"error on refresh_data: {e}")
     
@@ -167,7 +182,24 @@ class MainWindow(QMainWindow):
                self.data_ticker_widgets[symbol].update_data(data.close, change_percentage)
 
 
-    
+
+    def update_displayed_data(self, stock_data:Dict[str, StockData]):
+        texti = "Stock data \n\n"
+
+        for symbol, data in stock_data.items():
+            if data:
+                real_change_percent = (data.close-data.open)/data.open*100
+                texti += f"symbol: {symbol}\n"
+                texti +=f"change: {real_change_percent} \n"
+                texti +=f"opening price: {data.open} \n"
+                texti +=f"closing price: {data.close} \n"
+                texti +=f"Volume: {data.volume} \n"
+
+        self.data_Display.setText(texti)
+                
+
+
+
 
 
 
