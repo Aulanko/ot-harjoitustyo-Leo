@@ -158,8 +158,12 @@ class MainWindow(QMainWindow):
        
        for symbol, data in stock_data.items():
            if data and symbol in self.data_ticker_widgets:
-               if hasattr(data,"open"):
-                change_percent = (data.close-data.open)/data.open*100
+               return
+                
+            
+
+                   
+                   
 
        return
 
