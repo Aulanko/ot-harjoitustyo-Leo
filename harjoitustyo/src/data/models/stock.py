@@ -17,6 +17,7 @@ class StockData:
     high: float
     low: float
     close: float
+    open:float
     volume: int=0
 
    
@@ -27,6 +28,7 @@ class StockData:
             "high": self.high,
             "low": self.low,
             "close": self.close,
+            "open": self.open,
             "volume": self.volume
         }
     
@@ -100,6 +102,7 @@ class DataFactory():
             high=yf_data["High"].iloc[-1],
             low=yf_data["Low"].iloc[-1],
             close=yf_data["Close"].iloc[-1],
+            open=float(yf_data["Open"].iloc[-1]),
             volume=yf_data["Volume"].iloc[-1]
         )
     

@@ -5,8 +5,10 @@ from PyQt6.QtCore import QSize, Qt
 import sys
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
+from typing import Dict, Optional
 
 from services.analysis.analyzer import StockAnalysis
+from data.models.stock import StockData, StockSummary
 
 
 class DataTickerWidget(QLabel):
@@ -18,9 +20,9 @@ class DataTickerWidget(QLabel):
         self.change = change
         self.color = ""
         self.sign = ""
-        self.set_up_UI()
+        self.setUpUI()
 
-    def set_up_UI(self):
+    def setUpUI(self):
         if self.change >=0:
             self.color ="green"
             self.sign="+"
@@ -77,7 +79,7 @@ class MainWindow(QMainWindow):
 
 
 
-        pass
+    
 
     def create_left_panel(self):
         panel = QWidget()
@@ -142,7 +144,7 @@ class MainWindow(QMainWindow):
 
 
 
-        pass
+   
     
 
     def refresh_data(self):
@@ -152,9 +154,14 @@ class MainWindow(QMainWindow):
         except Exception as e:
             self.logger.warning(f"error on refresh_data: {e}")
     
-    def update_data_ticker_widgets(self):
+    def update_data_ticker_widgets(self, stock_data: Dict[str,StockData]):
+       
+       for symbol, data in stock_data.items():
+           if data and symbol in self.data_ticker_widgets:
+               if hasattr(data,"open"):
+                change_percent = (data.close-data.open)/data.open*100
 
-        pass
+       return
 
 
 

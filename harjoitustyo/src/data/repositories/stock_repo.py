@@ -13,7 +13,7 @@ import sqlite3
 import json
 from datetime import datetime
 
-from models.stock import StockSummary, DataFactory
+from models.stock import StockData, DataFactory
 
 
 
@@ -56,14 +56,7 @@ class InvalidSymbol(Exception):
 
 
 
-@dataclass
-class StockData(): 
-    symbol : str
-    timestamp : datetime
-    high: float
-    low: float
-    close: float
-    volume: int=0
+
 
 
 class BaseStockClass(ABC):
@@ -181,14 +174,8 @@ class StockRepository(BaseStockClass):
 
 
             try:
-                self.set_to_cache(cache_key, json.dumps({
-                    "symbol": stock_data.symbol,
-                    "low": stock_data.low,
-                    "high": stock_data.high,
-                    "close": stock_data.close,
-                    "volume": stock_data.volume,
-                    "timestamp":stock_data.timestamp.isoformat()
-                }))
+                self.set_to_cache(cache_key, stock_data.to_dict())
+                
             except Exception as e:
                 self.logger.warning(f"Failed to set cahce data for {symbol}: {e}")
            
@@ -229,14 +216,15 @@ class StockRepository(BaseStockClass):
     def store_historical_data(self, stock_data:StockData)->None:
         try:
             with sqlite3.connect(self.db_path) as connection:
-                connection.execute("""INSERT INTO Stock_hist (symbol, timestamp, high, low,close,
+                connection.execute("""INSERT INTO Stock_hist (symbol, timestamp, high, low,close,open,
                                    volume)
-                                   VALUES (?,?,?,?,?,?)  """, (
+                                   VALUES (?,?,?,?,?,?,?)  """, (
                                        stock_data.symbol,
                                        stock_data.timestamp,
                                        stock_data.high,
                                        stock_data.low,
                                        stock_data.close,
+                                       stock_data.open,
                                        stock_data.volume
                                    ))
         except Exception as e:
