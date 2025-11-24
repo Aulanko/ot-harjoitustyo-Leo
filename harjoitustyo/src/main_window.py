@@ -189,7 +189,10 @@ class MainWindow(QMainWindow):
         for symbol, data in stock_data.items():
             if data:
                 real_change_percent = (data.close-data.open)/data.open*100
+                
+                
                 texti += f"symbol: {symbol}\n"
+                texti += f"Timestamp on close: {data.timestamp.replace(tzinfo=None)}\n"
                 texti +=f"change: {real_change_percent} \n"
                 texti +=f"opening price: {data.open} \n"
                 texti +=f"closing price: {data.close} \n"
