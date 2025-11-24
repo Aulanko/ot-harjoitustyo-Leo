@@ -7,8 +7,8 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from typing import Dict, Optional
 
-from services.analysis.analyzer import StockAnalysis
-from data.models.stock import StockData, StockSummary
+from analysis.analyzer import StockAnalysis
+from models.stock import StockData, StockSummary
 
 
 class DataTickerWidget(QLabel):
@@ -16,6 +16,7 @@ class DataTickerWidget(QLabel):
     def __init__(self, symbol:str, price: float, change:float):
         super().__init__()
         self.symbol = symbol
+        self.stock_service = None
         self.price = price
         self.change = change
         self.color = ""
@@ -77,7 +78,10 @@ class MainWindow(QMainWindow):
         right_panel = self.create_right_panel()
         main_layout.addWidget(right_panel)
 
-
+    def update_data(self, price:float, change:float):
+        self.price = price
+        self.change = change
+        self.setUpUI()
 
     
 
@@ -158,17 +162,12 @@ class MainWindow(QMainWindow):
        
        for symbol, data in stock_data.items():
            if data and symbol in self.data_ticker_widgets:
-               return
-                
-            
-
-                   
-                   
-
-       return
+               
+               change_percentage = (data.close-data.open)/data.open*100
+               self.data_ticker_widgets[symbol].update_data(data.close, change_percentage)
 
 
-
+    
 
 
 
