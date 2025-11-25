@@ -17,13 +17,17 @@ Tässä on normaalia tekstiä  **boldattuna** ja tässä tekstiä *kursivoituna*
 ### [Changelog](./documentation/changelog.md)
 
 
+###Asenna riippuvuudet komennolla:
 ```mermaid
-flowchart TD
-    A[Asenna riippuvuudet] --> B["poetry install"]
-    C[Käynnistä sovellus] --> D["poetry run invoke start"]
-    
-    E[Muut invoke-komennot] --> F["poetry run invoke test"]
-    E --> G["poetry run invoke coverage_report"]
-    E --> H["poetry run invoke lint"]
-    E --> I["poetry run invoke format_for_lint"]
 
+
+poetry install
+
+
+Suorita vaadittavat alustustoimenpiteet komennolla:
+
+poetry run invoke build
+
+Käynnistä sovellus komennolla:
+
+poetry run invoke start
