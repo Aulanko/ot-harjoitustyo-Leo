@@ -16,4 +16,11 @@ Tässä on normaalia tekstiä  **boldattuna** ja tässä tekstiä *kursivoituna*
 
 ### [Changelog](./documentation/changelog.md)
 
+flowchart TD
+    
+    B --> C[Asenna riippuvuudet komennolla:]
+    C --> D["poetry install"]
+
+    F --> G[Käynnistä sovellus komennolla:]
+    G --> H["poetry run invoke start"]
 
