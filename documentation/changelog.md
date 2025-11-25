@@ -12,10 +12,14 @@
 
 ## Viikko 4
 
-- Käyttäjä voi nyt nähdä myös analyysi tietoja yrityksistä, jotka ladattiin load-napista.
-- Luotu Analyze-luokka, joka vastaa datan analysoinnista ja suuremmista matemaattisista operaatioista, joita tehdään datalle.
+- Käyttäjä voi nyt nähdä myös analyysi tietoja yrityksistä sekä yrityksen osakkeen hinnan painamalla analyze nappia.
+- Käyttäjä voi lisätä uusia vertailtavia yrityksiä kirjoittamalla yrityksen osakkeen nimi osakenimenä esim. "NVDA".
+- Käyttäjä näkee päivitetyn osakehinta vertailu kaavion painamalla analyze nappia.
+- Tehty rakennemuutoksia koodiin, siten että se olisi skaalautuvampi eriyttämällä mm. datan hakeminen, analysointi + käsittelyä omiksi moduuleiksi
 - Yhdistetty lataustoiminnallisuuden näkyvyys käyttäjän käyttöliittymänäkymään.
-- Tehty testejä Analyze-luokalle.
+- Tehty testejä stock.py tiedostolle
+- Pylint otettu käyttöön
+  
 
 
 
