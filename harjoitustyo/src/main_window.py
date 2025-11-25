@@ -7,6 +7,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from typing import Dict, Optional
 import logging
+import yfinance as yf
 
 from analysis.analyzer import StockAnalysis
 from models.stock import StockData, StockSummary
@@ -162,11 +163,9 @@ class MainWindow(QMainWindow):
         tick = DataTickerWidget(symbol, 0, 0)
         self.data_ticker_widgets[symbol] = tick
 
-        # Get the right panel layout properly
         right_panel = self.PriceChart.parentWidget()
-        layout = right_panel.layout()  # This should be your QGridLayout
+        layout = right_panel.layout()  
         
-        # Add to the next available column
         col = len(self.data_ticker_widgets) - 1
         layout.addWidget(tick, 0, col)
 
@@ -180,6 +179,17 @@ class MainWindow(QMainWindow):
             return
         if not symbol:
             return
+        
+        try:
+            stock_to_look = yf.Ticker(symbol)
+            info = stock_to_look.history(period="1d")
+            if info.empty:
+                self.logger.warning(f"Symbol tried to be added not found in Yahoo Finance")
+                self.new_symbol.clear()
+                return
+        except Exception as e:
+            self.logger.waring(f"Error trying to add a symbol to Currentsymbols: {e}")
+
 
         self.CurrentSymbols.append(symbol)
         self.symbols.setText(str(self.CurrentSymbols))
@@ -254,8 +264,6 @@ class MainWindow(QMainWindow):
    
 
   
-
-
 
 
 
