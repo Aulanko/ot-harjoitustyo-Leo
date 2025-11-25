@@ -4,7 +4,7 @@ import logging
 from typing import Dict, Optional, List
 from models.stock import StockSummary, DataFactory, StockData
 from  repositories.stock_repo import StockRepository, SpotStockDataError, InvalidSymbol
-import pandas as pd
+
 
 class StockAnalysis:
 
