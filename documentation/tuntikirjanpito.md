@@ -13,4 +13,6 @@
 | 20.11. | 9h    | Opiskeltu hyviä ohjelmisto insinööri käytäntöjä, ja paljon python decorattoreista, kirjastoista, metodeista, ohjelmisto arkkitehtuuria sekä koodia muokattu/listätty uusia rakenteita tulevalle |
 | 21.11. | 7h    | Uusien ohjelman toiminnallisuuksien rakentamista tulevalle. Esim osake datan käsittelyyn tehty tiedosto stock_repo.py |
 | 23.11. | 6.5h    | Uuden käyttöliittymän tekemistä + aikaisemman "uuden, parempien ohjelmisto käytäntöjen" koodin yhteen sovittamista ja rakentamista |
+| 24.11. | 4h    | Uuden käyttöliittymän tekemistä, datan yhdistämisen backend toimintoihin, sekä sen ulostuonti käyttöliittymään |
+| 25.11. | 3h    | Uuden käyttöliittymän tekemistä + vertailu pylväskaavion visualisoimisen tekeminen uuteen käyttöliittymään|
 
