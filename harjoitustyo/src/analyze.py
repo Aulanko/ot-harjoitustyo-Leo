@@ -28,7 +28,3 @@ class Analyze():
             first_stoock_plot_data["Close"], second_stock_plot_data["Close"])
         correlation = correlation_matrix[0, 1]
         return correlation
-    
-    
-    
-
