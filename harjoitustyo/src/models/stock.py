@@ -62,7 +62,7 @@ class StockData:
         if previous_close==0:
             return 0.0
         ans = self.close-previous_close
-
+        
         return (ans/previous_close)*100
     
 
