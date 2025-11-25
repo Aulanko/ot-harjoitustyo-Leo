@@ -13,7 +13,7 @@ from models.stock import StockData, StockSummary
 from repositories.stock_repo import StockRepository
 
 
-class DataTickerWidget(QLabel):
+class DataTickerWidget(QWidget):
 
     def __init__(self, symbol:str, price: float, change:float):
         super().__init__()
@@ -41,7 +41,7 @@ class DataTickerWidget(QLabel):
         layout.addWidget(self.price_label)
         layout.addWidget(self.change_label)
 
-        self.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         
     def update_data(self, price:float, change:float):
@@ -58,7 +58,7 @@ class DataTickerWidget(QLabel):
         self.price_label.setText(f"{price}$")
         self.change_label.setText(f"{self.sign}{abs(self.change)}%")
         self.change_label.setStyleSheet(f"color: {self.color}")
-        self.setUpUI()
+      
 
 
 
@@ -107,7 +107,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(title)
 
         layout.addWidget(QLabel("Symbols:"))
-        self.symbols = QTextEdit()
+        self.symbols = QTextEdit(f"{self.CurrentSymbols}")
 
         layout.addWidget(self.symbols)
 
@@ -117,14 +117,17 @@ class MainWindow(QMainWindow):
         symbol_layout.addWidget(self.new_symbol)
 
         add_button = QPushButton("Add")
-        #add_button.clicked.connect()
+        add_button.clicked.connect(self.handle_add_symbol)
         symbol_layout.addWidget(add_button)
         layout.addLayout(symbol_layout)
 
         analyze_button = QPushButton("Analyze")
         analyze_button.clicked.connect(self.refresh_data)
 
+       
+
         layout.addWidget(analyze_button)
+       
 
         return panel
     
@@ -155,12 +158,34 @@ class MainWindow(QMainWindow):
         return panel
 
 
+    def add_ticker_widget(self, symbol: str):
+        tick = DataTickerWidget(symbol, 0, 0)
+        self.data_ticker_widgets[symbol] = tick
+
+        # Get the right panel layout properly
+        right_panel = self.PriceChart.parentWidget()
+        layout = right_panel.layout()  # This should be your QGridLayout
+        
+        # Add to the next available column
+        col = len(self.data_ticker_widgets) - 1
+        layout.addWidget(tick, 0, col)
 
 
 
 
 
+    def handle_add_symbol(self):
+        symbol = self.new_symbol.text().strip().upper()
+        if symbol in self.CurrentSymbols:
+            return
+        if not symbol:
+            return
 
+        self.CurrentSymbols.append(symbol)
+        self.symbols.setText(str(self.CurrentSymbols))
+        self.add_ticker_widget(symbol)
+        self.new_symbol.clear()
+        
    
     
 
@@ -170,6 +195,7 @@ class MainWindow(QMainWindow):
             if current_data:
                 self.update_data_ticker_widgets(current_data)
                 self.update_displayed_data(current_data)
+                self.visualized_comparison(current_data)
         except Exception as e:
             self.logger.warning(f"error on refresh_data: {e}")
     
@@ -199,9 +225,35 @@ class MainWindow(QMainWindow):
                 texti +=f"Volume: {data.volume} \n"
 
         self.data_Display.setText(texti)
-                
 
+    def visualized_comparison(self, stock_data:Dict[str, StockData] ):
+        figure = self.PriceChart.figure
 
+        figure.clear()
+        axes = figure.add_subplot(111)
+
+        
+        symbols = []
+        prices = []
+
+        for symbol, data in stock_data.items():
+            symbols.append(symbol)
+            prices.append(data.close)
+
+        bars = axes.bar(symbols, prices)
+        axes.set_ylabel("Price")
+        axes.set_xlabel("Companies")
+        axes.set_title("Stock prices")
+
+        for bar, price in zip(bars, prices):
+            bar_height = bar.get_height()
+            axes.text(bar.get_x() + bar.get_width()/2., bar_height,
+                       f'{price:.3f}$', ha='center', va='bottom')
+        self.PriceChart.draw()
+
+   
+
+  
 
 
 
