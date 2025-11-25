@@ -19,14 +19,14 @@ Tässä on normaalia tekstiä  **boldattuna** ja tässä tekstiä *kursivoituna*
 
 ###Asenna riippuvuudet komennolla:
 
-
+```
 poetry install
+```
 
 
-Suorita vaadittavat alustustoimenpiteet komennolla:
-
-poetry run invoke build
 
 Käynnistä sovellus komennolla:
 
+```
 poetry run invoke start
+```
