@@ -16,6 +16,8 @@ Tässä on normaalia tekstiä  **boldattuna** ja tässä tekstiä *kursivoituna*
 
 ### [Changelog](./documentation/changelog.md)
 
+
+
 ### Asenna riippuvuudet komennolla:
 
 ```
@@ -28,23 +30,23 @@ poetry install
 poetry run invoke start
 ```
 
-# Aja Pytestit:
+### Aja Pytestit:
 ```
 poetry run invoke test
 ```
 
-# Coverage-raportti
+### Coverage-raportti
 ```
 poetry run invoke coverage_report
 ```
 
-# Linttaus
+### Linttaus
 
 ```
 poetry run invoke lint
 ```
 
-# Koodin linttauksen formatointia
+### Koodin linttauksen formatointia
 ```
 poetry run invoke format_for_lint
 ```
