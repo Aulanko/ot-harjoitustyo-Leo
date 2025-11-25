@@ -232,7 +232,7 @@ class MainWindow(QMainWindow):
                 texti +=f"change: {real_change_percent} \n"
                 texti +=f"opening price: {data.open} \n"
                 texti +=f"closing price: {data.close} \n"
-                texti +=f"Volume: {data.volume} \n"
+                texti +=f"Volume: {data.volume} \n\n\n"
 
         self.data_Display.setText(texti)
 
