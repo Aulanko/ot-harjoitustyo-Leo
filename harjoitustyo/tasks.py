@@ -18,4 +18,10 @@ def coverage_report(ctx):
     ctx.run("coverage report -m --omit='*/ei_kaytossa_vanha.py'")
     ctx.run("coverage html --omit='*/ei_kaytossa_vanha.py'")
 
-    
+@task
+def lint(ctx):
+    ctx.run("pylint --ignore=main.py,ei_kaytossa_vanha.py  src")
+
+@task
+def format_for_lint(ctx):
+    ctx.run("autopep8 --in-place --recursive src")
