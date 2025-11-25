@@ -6,7 +6,7 @@
 
 Tässä on normaalia tekstiä  **boldattuna** ja tässä tekstiä *kursivoituna* 
 
-### [Laskarit](./laskarit)
+
 
 ### [Käyttöohje](./harjoitustyo/README.md)
 
