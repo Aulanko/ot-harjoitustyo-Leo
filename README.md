@@ -18,7 +18,6 @@ Tässä on normaalia tekstiä  **boldattuna** ja tässä tekstiä *kursivoituna*
 
 
 ###Asenna riippuvuudet komennolla:
-```mermaid
 
 
 poetry install
