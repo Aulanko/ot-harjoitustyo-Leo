@@ -20,7 +20,7 @@ Lähtökohtaisesti ei ole erilaisia käyttäjä rooleja.
 
 ## Jatkokehitysideoita
 
-* Tarjoaa käyttäliittymän, jossa valita useammasta osakkeesta tietoja.(tavallaan tehty, mutta ei ihan)
+* Tarjoaa käyttäliittymän, jossa valita useammasta osakkeesta tietoja.(hyvin alkeellinen versio tehty)
 * Authentikaatio/kirjautuminen + tallennettu käyttäjän tiedot.
 * Käyttäjä voi tarkastella dataa haluamansa aikavälin väliltä.
 * Käyttäjä voi valita useampia osakkeita, ja saada niistä vertailu visualisoinnin. (hyvin alkeellinen versio tehty )
