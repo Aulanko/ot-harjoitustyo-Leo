@@ -57,6 +57,8 @@ class StockData:
         ans = self.close-previous_close
 
         return (ans/previous_close)*100
+    
+    
 
 
 @dataclass

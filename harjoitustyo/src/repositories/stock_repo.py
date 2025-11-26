@@ -225,3 +225,25 @@ class StockRepository(BaseStockClass):
         except Exception as e:
             self.logger.warning(
                 f"Failed to save stock data into the Stock_hist table: {e}")
+            
+  
+    def get_historical_timeframe_data(self, symbol:str, start_date:str, end_date:str, interval):
+        try: 
+            ticker = yf.Ticker(symbol)
+            time_frame = ticker.history(start=start_date, end=end_date, interval=interval)
+            if time_frame.empty:
+                self.logger.warning(
+                    f"No historical stock data available for symbol: {symbol}")
+                return pd.DataFrame()
+            return time_frame
+        except Exception as e:
+            self.logger.warning(
+                f"failed to fetch historical data for {symbol}: {e}")
+            raise DataSourceFailed(
+                f"Perhaps no data source for this symbol {symbol}: {e}")
+        
+
+
+
+
+

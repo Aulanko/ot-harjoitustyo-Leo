@@ -47,3 +47,18 @@ class StockAnalysis:
         except Exception as e:
             self.logger.warning(
                 f"historical_data_analysis failed on symbol: {symbol}. {e}")
+            
+    def calculate_over_bought_and_oversold(self, symbol:str):
+        data_from_last_14_days = self.repo.get_historical_data(symbol=symbol, period="14d", interval="1d")
+        current_data= self.repo.get_current_data(symbol=symbol)
+        highest_high = max(data_from_last_14_days["High"])
+        lowest_low = min(data_from_last_14_days["Low"])
+
+        current_close = current_data.close
+
+        Williams_R = ((highest_high-current_close)/(highest_high-lowest_low))*-100
+
+        return Williams_R
+        
+            
+    
