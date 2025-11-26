@@ -60,5 +60,6 @@ class StockAnalysis:
 
         return Williams_R
         
+        
             
     
