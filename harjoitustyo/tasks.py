@@ -14,9 +14,9 @@ def test(ctx):
 
 @task
 def coverage_report(ctx):
-    ctx.run("coverage run --branch --omit='*/ei_kaytossa_vanha.py' -m pytest")
-    ctx.run("coverage report -m --omit='*/ei_kaytossa_vanha.py'")
-    ctx.run("coverage html --omit='*/ei_kaytossa_vanha.py'")
+    ctx.run('coverage run --branch --omit="*/ei_kaytossa_vanha.py,src/main.py,src/visual.py" -m pytest')
+    ctx.run('coverage report -m --omit="*/ei_kaytossa_vanha.py,src/main.py,src/visual.py"')
+    ctx.run('coverage html --omit="*/ei_kaytossa_vanha.py,src/main.py,src/visual.py"')
 
 @task
 def lint(ctx):

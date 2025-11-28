@@ -40,7 +40,8 @@ class StockAnalysis:
                     low=float(row["Low"]),
                     volume=int(row["Volume"]),
                     timestamp=index.to_pydatetime(),
-                    close=float(row["Close"])
+                    close=float(row["Close"]),
+                    open=float(row["Open"])
                 ))
             answer = DataFactory.stock_data_summary(symbol, dataPoints)
             return answer

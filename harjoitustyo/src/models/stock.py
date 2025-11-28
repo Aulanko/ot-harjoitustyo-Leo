@@ -70,7 +70,9 @@ class StockSummary:
     high: float
     low: float
     volume_avg: float
+    open:float
     data_points: int = 0
+    
 
     @property
     def price_change_range(self):
@@ -108,6 +110,8 @@ class DataFactory():
         high = [dp.high for dp in data_points]
         low = [dp.low for dp in data_points]
         volume = [dp.volume for dp in data_points]
+        
+        
 
         return StockSummary(
             symbol=symbol,
@@ -117,4 +121,6 @@ class DataFactory():
             low=min(low),
             volume_avg=(sum(volume))/len(volume),
             data_points=len(data_points)
+            
+            
         )
