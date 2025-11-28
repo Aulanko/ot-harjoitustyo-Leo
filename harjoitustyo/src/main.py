@@ -216,15 +216,13 @@ class MainWindow(QMainWindow):
                 texti += f"closing price: {data.close} \n"
                 texti += f"Volume: {data.volume} \n\n\n"
 
-                williams_R = self.analyzer.calculate_over_bought_and_oversold(symbol)
+                williams_R = self.analyzer.calculate_over_bought_and_oversold(
+                    symbol)
                 analysis_texti += f"Williams Percent Range (-100 to 0). -50 as the middle point. Under it -> more oversold, over it -> more over bought\n"
                 analysis_texti += f"for stock: {symbol}, we got: {williams_R}\n\n"
 
         self.data_Display.setText(texti)
         self.analysis_Display.setText(analysis_texti)
-
-
-       
 
     def visualized_comparison(self, stock_data: Dict[str, StockData]):
         figure = self.PriceChart.figure
