@@ -1,17 +1,17 @@
-
 import logging
 
-import yfinance as yf
-import pandas as pd
-from redis import Redis
-
 from abc import ABC, abstractmethod
-from typing import Dict, List, Optional, Tuple, Optional
-from dataclasses import dataclass
+from typing import Dict, List, Optional
 
 import sqlite3
 import json
 from datetime import datetime
+
+import yfinance as yf
+import pandas as pd
+
+from redis import Redis
+from redis.exceptions import RedisError
 
 from models.stock import StockData, DataFactory
 
@@ -19,7 +19,8 @@ from models.stock import StockData, DataFactory
 class SpotStockDataError(Exception):
     def __init__(self, symbol: str, message: str = None):
         self.symbol = symbol
-        self.message = message or f"An error occurred when doing operation on stockData symbol: {self.symbol}"
+        self.message = message or \
+            f"An error occurred when doing operation on stockData symbol: {self.symbol}"
         super().__init__(self.message)
 
     def log_error(self):
@@ -63,7 +64,8 @@ class BaseStockClass(ABC):
         raise NotImplementedError("subclasses must implement get_current_data")
 
     @abstractmethod
-    def get_historical_data(self, symbol: str, period: str = "1mo", interval: str = "1d") -> pd.DataFrame:
+    def get_historical_data(self, symbol: str, period: str = "1mo",
+                            interval: str = "1d") -> pd.DataFrame:
         raise NotImplementedError(
             "subclasses must implement get_historical_data")
 
@@ -85,9 +87,10 @@ class StockRepository(BaseStockClass):
                 self.redis_client = Redis(
                     host='localhost', port=6379, decode_responses=True)
                 self.redis_client.ping()
-            except Exception as e:
+            except (ValueError, RedisError) as e:
                 self.logger.warning(
-                    f"Redis unavailable, lets use SQL lite instead. Error: {e} ")
+                    "Redis unavailable, lets use SQL lite instead. Error: %s",
+                    e)
                 self.redis_client = None
 
         self.db_path = db_path
@@ -96,7 +99,7 @@ class StockRepository(BaseStockClass):
     def init_database(self):
         try:
             with sqlite3.connect(self.db_path) as connection:
-                connection.execute("""CREATE TABLE IF NOT EXISTS Stock_hist 
+                connection.execute("""CREATE TABLE IF NOT EXISTS Stock_hist
                                    (
                                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                                     symbol TEXT NOT NULL,
@@ -108,93 +111,110 @@ class StockRepository(BaseStockClass):
                                    timestamp DATETIME NOT NULL 
                                    )
                                    """)
-
                 connection.execute(
-                    "CREATE INDEX IF NOT EXISTS idx_symbol_timestamp ON Stock_hist(symbol, timestamp)")
-        except Exception as e:
-            self.logger.warning(f"Error creating the db table:{e}")
-            raise SpotStockDataError("Database initialization failed")
+                    "CREATE INDEX IF NOT EXISTS idx_symbol_timestamp"
+                    " ON Stock_hist(symbol, timestamp)")
+        except sqlite3.Error as e:
+            self.logger.warning(
+                "Error creating the db table: %s", e)
+            raise SpotStockDataError(
+                "Database initialization failed", e) from e
 
     def cache_key(self, symbol: str, data_type: str) -> str:
         return f"stock:{symbol}:{data_type}"
 
-    def get_from_cache(self, key: str) -> Optional[str]:
-        if not self.cache_enabled or self.redis_client == None:
+    def _get_from_cache(self, key: str) -> Optional[str]:
+        if not self.cache_enabled or self.redis_client is None:
             return None
         try:
             return self.redis_client.get(key)
-        except Exception as e:
-            self.logger.warning(f"Failed to read cache: {e}")
+        except RedisError as e:
+            self.logger.warning("Failed to read cache: %s", e)
             return None
 
     def set_to_cache(self, key: str, data: str, expire_seconds=300) -> None:
-        if not self.cache_enabled or self.redis_client == None:
-            return None
+        if not self.cache_enabled or self.redis_client is None:
+            return
         try:
             self.redis_client.setex(key, expire_seconds, data)
-        except Exception as e:
-            self.logger.warning(f"failed to set the data to cache: {e}")
+        except RedisError as e:
+            self.logger.warning("failed to set the data to cache: %s", e)
 
     def get_current_data(self, symbol: str) -> Optional[StockData]:
+        if not symbol or not isinstance(symbol, str):
+            raise InvalidSymbol("invalid symbol or not symbol at all")
 
-        if not symbol or isinstance(symbol, str) == False:
-            raise InvalidSymbol(f"invalid symbol or not symbol at all")
-
-        cache_key = self.cache_key(symbol, "current")
-        cached_data = self.get_from_cache(cache_key)
-
+        cached_data = self._get_cached_current_data(symbol)
         if cached_data:
-            try:
-                cache_dict = json.loads(cached_data)
+            return cached_data
 
-                cache_dict["timestamp"] = datetime.fromisoformat(
-                    cache_dict["timestamp"])
-                return StockData(**cache_dict)
-            except Exception as e:
-                raise SpotStockDataError(
-                    symbol, f"error getting stock data from cache: {e}")
+        return self._fetch_and_cache_current_data(symbol)
 
+    def _get_cached_current_data(self, symbol: str) -> Optional[StockData]:
+        cache_key = self.cache_key(symbol, "current")
+        cached_data = self._get_from_cache(cache_key)
+        if not cached_data:
+            return None
+
+        try:
+            cache_dict = json.loads(cached_data)
+            cache_dict["timestamp"] = datetime.fromisoformat(
+                cache_dict["timestamp"])
+            return StockData(**cache_dict)
+        except Exception as e:
+            raise SpotStockDataError(
+                symbol, f"error getting stock data from cache: {e}") from e
+
+    def _fetch_and_cache_current_data(self, symbol: str) -> Optional[StockData]:
         try:
             ticker = yf.Ticker(symbol)
             time_frame = ticker.history(period="1d", interval="1m")
             if time_frame.empty:
                 self.logger.warning(
-                    f"No stock data available for symbol: {symbol}")
+                    "No stock data available for symbol: %s", symbol)
                 return None
-
             stock_data = DataFactory.create_stock_data_from_yf(
                 symbol, time_frame)
+            self._cache_current_data(symbol, stock_data)
+            return stock_data
 
-            try:
-                self.set_to_cache(cache_key, stock_data.to_dict())
-
-            except Exception as e:
-                self.logger.warning(
-                    f"Failed to set cahce data for {symbol}: {e}")
-
-        except Exception as e:
+        except json.JSONDecodeError as e:
             self.logger.warning(
-                f"The operation to get current data failed for {symbol}: {e}")
-            raise DataSourceFailed(f"Error with the data source: {e}")
+                "The operation to get current data failed for %s: %s",
+                symbol, e
+            )
+            raise DataSourceFailed(f"Error with the data source: {e}") from e
 
-        return stock_data
+    def _cache_current_data(self, symbol: str, stock_data: StockData) -> None:
+        cache_key = self.cache_key(symbol, "current")
+        try:
+            self.set_to_cache(cache_key, stock_data.to_dict())
+        except (ValueError, RedisError) as e:
+            self.logger.warning(
+                "Failed to set cache data for %s: %s", symbol, e)
 
-    def get_historical_data(self, symbol: str, period: str = "1mo", interval: str = "1d") -> pd.DataFrame:
+    def get_historical_data(
+            self,
+            symbol: str,
+            period: str = "1mo",
+            interval: str = "1d"
+            ) -> pd.DataFrame:
 
         try:
             ticker = yf.Ticker(symbol)
             time_frame = ticker.history(period=period, interval=interval)
             if time_frame.empty:
                 self.logger.warning(
-                    f"No historical stock data available for symbol: {symbol}")
+                    "No historical stock data available for symbol: %s", symbol)
                 return pd.DataFrame()
             return time_frame
 
-        except Exception as e:
+        except json.JSONDecodeError as e:
             self.logger.warning(
-                f"failed to fetch historical data for {symbol}: {e}")
+                "failed to fetch historical data for %s: %s", symbol, e)
             raise DataSourceFailed(
-                f"Perhaps no data source for this symbol {symbol}: {e}")
+                f"Perhaps no data source for this symbol {symbol}: {e}"
+            ) from e
 
     def get_multiple_current_data(self, symbols: List[str],) -> Dict[str, Optional[StockData]]:
         results = {}
@@ -203,7 +223,7 @@ class StockRepository(BaseStockClass):
             try:
                 results[symbol] = self.get_current_data(symbol)
             except (InvalidSymbol, DataSourceFailed) as e:
-                self.logger.error(f"failed to fetch data: {e}")
+                self.logger.error("failed to fetch data: %s", e)
                 results[symbol] = None
 
         return results
@@ -211,9 +231,11 @@ class StockRepository(BaseStockClass):
     def store_historical_data(self, stock_data: StockData) -> None:
         try:
             with sqlite3.connect(self.db_path) as connection:
-                connection.execute("""INSERT INTO Stock_hist (symbol, timestamp, high, low,close,open,
-                                   volume)
-                                   VALUES (?,?,?,?,?,?,?)  """, (
+                connection.execute(
+                    """INSERT INTO Stock_hist (symbol, timestamp,
+                        high, low,close,open,
+                        volume)
+                        VALUES (?,?,?,?,?,?,?)  """, (
                     stock_data.symbol,
                     stock_data.timestamp,
                     stock_data.high,
@@ -222,9 +244,9 @@ class StockRepository(BaseStockClass):
                     stock_data.open,
                     stock_data.volume
                 ))
-        except Exception as e:
+        except sqlite3.Error as e:
             self.logger.warning(
-                f"Failed to save stock data into the Stock_hist table: {e}")
+                "Failed to save stock data into the Stock_hist table: %s", e)
 
     def get_historical_timeframe_data(self, symbol: str, start_date: str, end_date: str, interval):
         try:
@@ -233,11 +255,12 @@ class StockRepository(BaseStockClass):
                 start=start_date, end=end_date, interval=interval)
             if time_frame.empty:
                 self.logger.warning(
-                    f"No historical stock data available for symbol: {symbol}")
+                    "No historical stock data available for symbol: %s", symbol)
                 return pd.DataFrame()
             return time_frame
-        except Exception as e:
+        except json.JSONDecodeError as e:
             self.logger.warning(
-                f"failed to fetch historical data for {symbol}: {e}")
+                "failed to fetch historical data for %s: %s", symbol, e)
             raise DataSourceFailed(
-                f"Perhaps no data source for this symbol {symbol}: {e}")
+                f"Perhaps no data source for this symbol {symbol}: {e}"
+            ) from e
