@@ -15,7 +15,7 @@ class Test_StockData(unittest.TestCase):
             high= 160.0,
             low=140.3,
             close=156.3,
-            open=145.2,
+            open_price=145.2,
             volume=38283
         )
     
@@ -29,7 +29,7 @@ class Test_StockData(unittest.TestCase):
         self.assertEqual(140.3,data.low)
 
         self.assertEqual(156.3,data.close)
-        self.assertEqual(145.2,data.open)
+        self.assertEqual(145.2,data.open_price)
         self.assertEqual(38283,data.volume)
         
 
@@ -46,7 +46,7 @@ class Test_StockData(unittest.TestCase):
                 high= 160.0,
                 low=170.3,
                 close=156.3,
-                open=145.2,
+                open_price=145.2,
                 volume=38283
             )
     
@@ -58,7 +58,7 @@ class Test_StockData(unittest.TestCase):
                 high= 160.0,
                 low=70.3,
                 close=156.3,
-                open=145.2,
+                open_price=145.2,
                 volume=-38283
             )
 

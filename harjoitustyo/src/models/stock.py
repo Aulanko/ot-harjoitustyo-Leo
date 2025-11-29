@@ -14,7 +14,7 @@ class StockData:
     high: float
     low: float
     close: float
-    open: float
+    open_price: float
     volume: int = 0
 
     def to_dict(self) -> Dict:
@@ -24,7 +24,7 @@ class StockData:
             "high": self.high,
             "low": self.low,
             "close": self.close,
-            "open": self.open,
+            "open_price": self.open_price,
             "volume": self.volume
         }
 
@@ -68,7 +68,7 @@ class StockSummary:
     high: float
     low: float
     volume_avg: float
-    open: float
+    open_price: float
     data_points: int = 0
 
     @property
@@ -94,7 +94,7 @@ class DataFactory():
             high=yf_data["High"].iloc[-1],
             low=yf_data["Low"].iloc[-1],
             close=yf_data["Close"].iloc[-1],
-            open=float(yf_data["Open"].iloc[-1]),
+            open_price=float(yf_data["Open"].iloc[-1]),
             volume=yf_data["Volume"].iloc[-1]
         )
 
@@ -102,11 +102,12 @@ class DataFactory():
     def stock_data_summary(symbol: str, data_points: list[StockData]) -> StockSummary:
 
         if not data_points:
-            raise ValueError(f"No data points were provided to the stock_data_summary static method, \
+            raise ValueError(f"No data points were provided to the stock_data_summary method,\
             symbol: {symbol}")
         high = [dp.high for dp in data_points]
         low = [dp.low for dp in data_points]
         volume = [dp.volume for dp in data_points]
+        open_price = [dp.open_price for dp in data_points]
 
         return StockSummary(
             symbol=symbol,
@@ -114,6 +115,7 @@ class DataFactory():
             time_end=max(dp.timestamp for dp in data_points),
             high=max(high),
             low=min(low),
+            open_price=max(open_price),
             volume_avg=(sum(volume))/len(volume),
             data_points=len(data_points)
 

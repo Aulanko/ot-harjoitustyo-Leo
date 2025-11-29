@@ -20,7 +20,7 @@ def coverage_report(ctx):
 
 @task
 def lint(ctx):
-    ctx.run("pylint --ignore=main.py,ei_kaytossa_vanha.py  src")
+    ctx.run("pylint --ignore=ei_kaytossa_vanha.py,finance_api.py  src")
 
 @task
 def format_for_lint(ctx):

@@ -7,7 +7,6 @@ from PyQt6.QtWidgets import (QApplication,
                              QLabel,
                              QGridLayout,
                              QTextEdit,
-
                              QPushButton,
                              QLineEdit)
 from PyQt6.QtCore import Qt
@@ -16,7 +15,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from typing import Dict, Optional
 
-
+# pylint: disable=import-error
 from analysis.analyzer import StockAnalysis
 from models.stock import StockData
 from repositories.stock_repo import StockRepository
@@ -136,9 +135,9 @@ class MainWindow(QMainWindow):
         self.PriceChart = FigureCanvas(Figure(figsize=(10, 4)))
         layout.addWidget(self.PriceChart, 1, 0, 1, len(self.CurrentSymbols))
 
-        self.data_Display = QTextEdit()
-        self.data_Display.setPlaceholderText("Stock Data shall appear..")
-        layout.addWidget(self.data_Display, 2, 0, 1, 2)
+        self.data_display = QTextEdit()
+        self.data_display.setPlaceholderText("Stock Data shall appear..")
+        layout.addWidget(self.data_display, 2, 0, 1, 2)
 
         self.analysis_Display = QTextEdit()
         self.analysis_Display.setPlaceholderText(
@@ -197,7 +196,8 @@ class MainWindow(QMainWindow):
         for symbol, data in stock_data.items():
             if data and symbol in self.data_ticker_widgets:
 
-                change_percentage = (data.close-data.open)/data.open*100
+                change_percentage = (
+                    data.close-data.open_price)/data.open_price*100
                 self.data_ticker_widgets[symbol].update_data(
                     data.close, change_percentage)
 
@@ -207,12 +207,13 @@ class MainWindow(QMainWindow):
 
         for symbol, data in stock_data.items():
             if data:
-                real_change_percent = (data.close-data.open)/data.open*100
+                real_change_percent = (
+                    data.close-data.open_price)/data.open_price*100
 
                 texti += f"symbol: {symbol}\n"
                 texti += f"Timestamp on close: {data.timestamp.replace(tzinfo=None)}\n"
                 texti += f"change: {real_change_percent} \n"
-                texti += f"opening price: {data.open} \n"
+                texti += f"opening price: {data.open_price} \n"
                 texti += f"closing price: {data.close} \n"
                 texti += f"Volume: {data.volume} \n\n\n"
 
@@ -221,7 +222,7 @@ class MainWindow(QMainWindow):
                 analysis_texti += f"Williams Percent Range (-100 to 0). -50 as the middle point. Under it -> more oversold, over it -> more over bought\n"
                 analysis_texti += f"for stock: {symbol}, we got: {williams_R}\n\n"
 
-        self.data_Display.setText(texti)
+        self.data_display.setText(texti)
         self.analysis_Display.setText(analysis_texti)
 
     def visualized_comparison(self, stock_data: Dict[str, StockData]):

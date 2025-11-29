@@ -22,13 +22,13 @@ class Test_StockAnalysis(unittest.TestCase):
     def test_get_current_data_for_multiple_symbols(self):
         mocks = {
             "GOOGL": StockData(symbol="GOOGL",high=150.0,low=145.0,volume=1000000, 
-                               timestamp=datetime.now(),close=148.0, open=145
+                               timestamp=datetime.now(),close=148.0, open_price=145
             ),
             "AAPL": StockData(symbol="AAPL", high=2800.0,low=2750.0,volume=500000,timestamp=datetime.now(),
-                               close=2780.0,open=2800.0
+                               close=2780.0,open_price=2800.0
             ),
             "MSFT": StockData(symbol="MSFT",high=340.0,low=335.0,volume=800000,timestamp=datetime.now(),
-                              close=338.0,open=340.0
+                              close=338.0,open_price=340.0
             )
         }
         self.mock.get_multiple_current_data.return_value = mocks
@@ -55,7 +55,7 @@ class Test_StockAnalysis(unittest.TestCase):
             high=150.0,
             low=120.0,
             volume_avg=20000.0,
-            open=145,
+            open_price=145,
             data_points=22
            
                 )

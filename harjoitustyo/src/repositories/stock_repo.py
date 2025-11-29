@@ -13,6 +13,7 @@ import pandas as pd
 from redis import Redis
 from redis.exceptions import RedisError
 
+# pylint: disable=import-error
 from models.stock import StockData, DataFactory
 
 
@@ -99,18 +100,19 @@ class StockRepository(BaseStockClass):
     def init_database(self):
         try:
             with sqlite3.connect(self.db_path) as connection:
-                connection.execute("""CREATE TABLE IF NOT EXISTS Stock_hist
-                                   (
-                                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                    symbol TEXT NOT NULL,
-                                    high REAL NOT NULL,
-                                    low  REAL NOT NULL,
-                                    close REAL NOT NULL,
-                                   
-                                    volume INT NOT NULL,
-                                   timestamp DATETIME NOT NULL 
-                                   )
-                                   """)
+                connection.execute(
+                    """CREATE TABLE IF NOT EXISTS Stock_hist
+                (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                symbol TEXT NOT NULL,
+                high REAL NOT NULL,
+                low  REAL NOT NULL,
+                close REAL NOT NULL,
+                open_price REAL NOT NULL,
+                volume INT NOT NULL,
+                timestamp DATETIME NOT NULL 
+                )
+                """)
                 connection.execute(
                     "CREATE INDEX IF NOT EXISTS idx_symbol_timestamp"
                     " ON Stock_hist(symbol, timestamp)")
@@ -198,7 +200,7 @@ class StockRepository(BaseStockClass):
             symbol: str,
             period: str = "1mo",
             interval: str = "1d"
-            ) -> pd.DataFrame:
+    ) -> pd.DataFrame:
 
         try:
             ticker = yf.Ticker(symbol)
@@ -233,17 +235,17 @@ class StockRepository(BaseStockClass):
             with sqlite3.connect(self.db_path) as connection:
                 connection.execute(
                     """INSERT INTO Stock_hist (symbol, timestamp,
-                        high, low,close,open,
+                        high, low,close,open_price,
                         volume)
                         VALUES (?,?,?,?,?,?,?)  """, (
-                    stock_data.symbol,
-                    stock_data.timestamp,
-                    stock_data.high,
-                    stock_data.low,
-                    stock_data.close,
-                    stock_data.open,
-                    stock_data.volume
-                ))
+                        stock_data.symbol,
+                        stock_data.timestamp,
+                        stock_data.high,
+                        stock_data.low,
+                        stock_data.close,
+                        stock_data.open_price,
+                        stock_data.volume
+                    ))
         except sqlite3.Error as e:
             self.logger.warning(
                 "Failed to save stock data into the Stock_hist table: %s", e)
