@@ -4,7 +4,7 @@ flowchart TD
     B --> C[Datakerros\nStockRepository]
     C --> D[Ulkoiset rajapinnat\nYahoo Finance]
     
-    C --> E[Välimuisti\nRedis]
+    C --> E[Välimuisti<br>Redis]
     C --> F[Tietokanta\nSQLite]
     
     G[Datamallit\nStockData, StockSummary] -.-> B
