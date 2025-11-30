@@ -1,12 +1,13 @@
+```mermaid
 flowchart TD
-    A[Käyttöliittymä<br>PyQt6] --> B[Toimintalogiikka<br>StockAnalysis]
-    B --> C[Datakerros<br>StockRepository]
-    C --> D[Ulkoiset rajapinnat<br>Yahoo Finance]
+    A[Käyttöliittymä\nPyQt6] --> B[Toimintalogiikka\nStockAnalysis]
+    B --> C[Datakerros\nStockRepository]
+    C --> D[Ulkoiset rajapinnat\nYahoo Finance]
     
-    C --> E[Välimuisti<br>Redis]
-    C --> F[Tietokanta<br>SQLite]
+    C --> E[Välimuisti\nRedis]
+    C --> F[Tietokanta\nSQLite]
     
-    G[Datamallit<br>StockData, StockSummary] -.-> B
+    G[Datamallit\nStockData, StockSummary] -.-> B
     G -.-> C
     
     subgraph "Sovelluksen ydin"
