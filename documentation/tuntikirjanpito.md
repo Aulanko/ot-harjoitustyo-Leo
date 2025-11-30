@@ -18,5 +18,6 @@
 | 25.11. | 4.5h    | Uuden käyttöliittymän tekemistä + vertailu pylväskaavion visualisoimisen tekeminen uuteen käyttöliittymään|
 | 26.11. | 1h    | Uuden williams R osakelaskennan ominaisuus lisätty, siten että käyttäjä saa siitä hyötyä irti |
 | 29.11. | 2h    | Koodin linttaamista |
-| Yhteensä | 71.5h  | 
+| 30.11. | 4h    | Koodin linttaamista, rakenteiden parantamista ja arkkitehtuurikaavion tekemistä |
+| Yhteensä | 75.5h  | 
 
