@@ -37,7 +37,7 @@ sequenceDiagram
     participant StockRepository
     participant YahooFinance
 
-    Käyttöliittymä->>StockAnalysis: laske_yliostettu_ja_ylimyyty(symbol)
+    Käyttöliittymä->>StockAnalysis: laske yliostettu ja ylimyyty(symbolille)
     StockAnalysis->>StockRepository: hae_historiset_tiedot(symbol, "1kk", "1pv")
     StockRepository->>YahooFinance: hae historialliset tiedot
     YahooFinance-->>StockRepository: hintadata
