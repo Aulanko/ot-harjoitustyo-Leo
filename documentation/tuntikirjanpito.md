@@ -17,5 +17,6 @@
 | 24.11. | 4h    | Uuden käyttöliittymän tekemistä, datan yhdistämisen backend toimintoihin, sekä sen ulostuonti käyttöliittymään |
 | 25.11. | 4.5h    | Uuden käyttöliittymän tekemistä + vertailu pylväskaavion visualisoimisen tekeminen uuteen käyttöliittymään|
 | 26.11. | 1h    | Uuden williams R osakelaskennan ominaisuus lisätty, siten että käyttäjä saa siitä hyötyä irti |
-| Yhteensä | 69.5h  | 
+| 29.11. | 2h    | Koodin linttaamista |
+| Yhteensä | 71.5h  | 
 
