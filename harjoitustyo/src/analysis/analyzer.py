@@ -2,7 +2,7 @@
 
 import logging
 from typing import Dict, Optional, List
-# pylint: disable=import-error
+
 from models.stock import StockSummary, DataFactory, StockData
 from repositories.stock_repo import StockRepository
 

@@ -1,4 +1,6 @@
-
+from typing import Dict
+import logging
+import sys
 from PyQt6.QtWidgets import (QApplication,
                              QMainWindow,
                              QWidget,
@@ -9,75 +11,37 @@ from PyQt6.QtWidgets import (QApplication,
                              QTextEdit,
                              QPushButton,
                              QLineEdit)
-from PyQt6.QtCore import Qt
-import sys
+
+
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-from typing import Dict, Optional
 
-# pylint: disable=import-error
-from analysis.analyzer import StockAnalysis
-from models.stock import StockData
-from repositories.stock_repo import StockRepository
-import logging
 import yfinance as yf
 
 
-class GetImmediateInfo(QWidget):
-
-    def __init__(self, symbol: str, price: float, change: float):
-        super().__init__()
-        self.symbol = symbol
-        self.stock_service = None
-        self.price = price
-        self.change = change
-        self.color = ""
-        self.sign = ""
-        self.setUpUI()
-
-    def setUpUI(self):
-
-        layout = QVBoxLayout()
-        self.setLayout(layout)
-
-        self.symbol_label = QLabel(f"{self.symbol}")
-        self.price_label = QLabel(f"{self.price}$")
-        self.change_label = QLabel()
-
-        layout.addWidget(self.symbol_label)
-        layout.addWidget(self.price_label)
-        layout.addWidget(self.change_label)
-
-        layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-    def update_data(self, price: float, change: float):
-        self.price = price
-        self.change = change
-
-        if self.change >= 0:
-            self.color = "green"
-            self.sign = "+"
-        else:
-            self.color = "red"
-            self.sign = "-"
-
-        self.price_label.setText(f"{price}$")
-        self.change_label.setText(f"{self.sign}{abs(self.change)}%")
-        self.change_label.setStyleSheet(f"color: {self.color}")
-
-    pass
+from analysis.analyzer import StockAnalysis
+from models.stock import StockData
+from repositories.stock_repo import StockRepository
+from ui.get_immeadiate_info import GetImmediateInfo
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.CurrentSymbols = ["AAPL", "GOOGL"]
-        self.setUpUI()
+        self.current_symbols = ["AAPL", "GOOGL"]
+
         self.logger = logging.getLogger(__name__)
+        self.data_ticker_widgets = {}
+        self.symbols = None
+        self.new_symbol = None
+        self.price_chart = None
+        self.data_display = None
+        self.analysis_display = None
 
         self.analyzer = StockAnalysis(StockRepository())
+        self.set_ui_up()
 
-    def setUpUI(self):
+    def set_ui_up(self):
         self.setWindowTitle("Stock data application")
 
         center_widget = QWidget()
@@ -100,7 +64,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(title)
 
         layout.addWidget(QLabel("Symbols:"))
-        self.symbols = QTextEdit(f"{self.CurrentSymbols}")
+        self.symbols = QTextEdit(f"{self.current_symbols}")
         layout.addWidget(self.symbols)
 
         symbol_layout = QHBoxLayout()
@@ -127,22 +91,22 @@ class MainWindow(QMainWindow):
         panel.setLayout(layout)
 
         self.data_ticker_widgets = {}
-        for i, symbol in enumerate(self.CurrentSymbols):
+        for i, symbol in enumerate(self.current_symbols):
             tick = GetImmediateInfo(symbol, 0, 0)
             self.data_ticker_widgets[symbol] = tick
             layout.addWidget(tick, 0, i)
 
-        self.PriceChart = FigureCanvas(Figure(figsize=(10, 4)))
-        layout.addWidget(self.PriceChart, 1, 0, 1, len(self.CurrentSymbols))
+        self.price_chart = FigureCanvas(Figure(figsize=(10, 4)))
+        layout.addWidget(self.price_chart, 1, 0, 1, len(self.current_symbols))
 
         self.data_display = QTextEdit()
         self.data_display.setPlaceholderText("Stock Data shall appear..")
         layout.addWidget(self.data_display, 2, 0, 1, 2)
 
-        self.analysis_Display = QTextEdit()
-        self.analysis_Display.setPlaceholderText(
+        self.analysis_display = QTextEdit()
+        self.analysis_display.setPlaceholderText(
             "Analysis Data shall appear..")
-        layout.addWidget(self.analysis_Display, 2, 2, 1, 2)
+        layout.addWidget(self.analysis_display, 2, 2, 1, 2)
 
         return panel
 
@@ -150,7 +114,7 @@ class MainWindow(QMainWindow):
         tick = GetImmediateInfo(symbol, 0, 0)
         self.data_ticker_widgets[symbol] = tick
 
-        right_panel = self.PriceChart.parentWidget()
+        right_panel = self.price_chart.parentWidget()
         layout = right_panel.layout()
 
         col = len(self.data_ticker_widgets) - 1
@@ -158,7 +122,7 @@ class MainWindow(QMainWindow):
 
     def handle_add_symbol(self):
         symbol = self.new_symbol.text().strip().upper()
-        if symbol in self.CurrentSymbols:
+        if symbol in self.current_symbols:
             return
         if not symbol:
             return
@@ -168,28 +132,28 @@ class MainWindow(QMainWindow):
             info = stock_to_look.history(period="1d")
             if info.empty:
                 self.logger.warning(
-                    f"Symbol tried to be added not found in Yahoo Finance")
+                    "Symbol tried to be added not found in Yahoo Finance")
                 self.new_symbol.clear()
                 return
-        except Exception as e:
+        except (ConnectionError, TimeoutError) as e:
             self.logger.waring(
-                f"Error trying to add a symbol to Currentsymbols: {e}")
+                "Error trying to add a symbol to current_symbols: %s", e)
 
-        self.CurrentSymbols.append(symbol)
-        self.symbols.setText(str(self.CurrentSymbols))
+        self.current_symbols.append(symbol)
+        self.symbols.setText(str(self.current_symbols))
         self.add_ticker_widget(symbol)
         self.new_symbol.clear()
 
     def refresh_data(self):
         try:
             current_data = self.analyzer.get_current_data_for_multiple_symbols(
-                self.CurrentSymbols)
+                self.current_symbols)
             if current_data:
                 self.update_data_ticker_widgets(current_data)
                 self.update_displayed_data(current_data)
                 self.visualized_comparison(current_data)
-        except Exception as e:
-            self.logger.warning(f"error on refresh_data: {e}")
+        except (ConnectionError, TimeoutError) as e:
+            self.logger.warning("error on refresh_data: %s", e)
 
     def update_data_ticker_widgets(self, stock_data: Dict[str, StockData]):
 
@@ -217,16 +181,17 @@ class MainWindow(QMainWindow):
                 texti += f"closing price: {data.close} \n"
                 texti += f"Volume: {data.volume} \n\n\n"
 
-                williams_R = self.analyzer.calculate_over_bought_and_oversold(
+                williams_r = self.analyzer.calculate_over_bought_and_oversold(
                     symbol)
-                analysis_texti += f"Williams Percent Range (-100 to 0). -50 as the middle point. Under it -> more oversold, over it -> more over bought\n"
-                analysis_texti += f"for stock: {symbol}, we got: {williams_R}\n\n"
+                analysis_texti += "Williams Percent Range (-100 to 0).\
+                -50 as the middle point. Under it -> more oversold, over it -> more over bought\n"
+                analysis_texti += f"for stock: {symbol}, we got: {williams_r}\n\n"
 
         self.data_display.setText(texti)
-        self.analysis_Display.setText(analysis_texti)
+        self.analysis_display.setText(analysis_texti)
 
     def visualized_comparison(self, stock_data: Dict[str, StockData]):
-        figure = self.PriceChart.figure
+        figure = self.price_chart.figure
 
         figure.clear()
         axes = figure.add_subplot(111)
@@ -243,11 +208,11 @@ class MainWindow(QMainWindow):
         axes.set_xlabel("Companies")
         axes.set_title("Stock prices")
 
-        for bar, price in zip(bars, prices):
-            bar_height = bar.get_height()
-            axes.text(bar.get_x() + bar.get_width()/2., bar_height,
+        for baari, price in zip(bars, prices):
+            bar_height = baari.get_height()
+            axes.text(baari.get_x() + baari.get_width()/2., bar_height,
                       f'{price:.3f}$', ha='center', va='bottom')
-        self.PriceChart.draw()
+        self.price_chart.draw()
 
 
 def main_window():

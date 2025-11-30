@@ -13,7 +13,7 @@ import pandas as pd
 from redis import Redis
 from redis.exceptions import RedisError
 
-# pylint: disable=import-error
+
 from models.stock import StockData, DataFactory
 
 
