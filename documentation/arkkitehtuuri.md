@@ -7,7 +7,7 @@ flowchart TD
     C --> E[Välimuisti<br>Redis]
     C --> F[Tietokanta<br>SQLite]
     
-    G[Datamallit\nStockData, StockSummary] -.-> B
+    G[Datamallit<br>StockData, StockSummary] -.-> B
     G -.-> C
     
     subgraph "Sovelluksen ydin"
