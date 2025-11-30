@@ -1,11 +1,11 @@
 ```mermaid
 flowchart TD
     A[Käyttöliittymä\nPyQt6] --> B[Toimintalogiikka\nStockAnalysis]
-    B --> C[Datakerros\nStockRepository]
-    C --> D[Ulkoiset rajapinnat\nYahoo Finance]
+    B --> C[Datakerros<br>StockRepository]
+    C --> D[Ulkoiset rajapinnat<br>Yahoo Finance]
     
     C --> E[Välimuisti<br>Redis]
-    C --> F[Tietokanta\nSQLite]
+    C --> F[Tietokanta<br>SQLite]
     
     G[Datamallit\nStockData, StockSummary] -.-> B
     G -.-> C
