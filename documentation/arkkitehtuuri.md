@@ -1,3 +1,7 @@
+# Arkkitehtuurikuvaus
+
+## Rakenne
+
 ```mermaid
 flowchart TD
     A[Käyttöliittymä<br>PyQt6] --> B[Toimintalogiikka<br>StockAnalysis]
