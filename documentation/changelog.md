@@ -21,5 +21,11 @@
 - Pylint otettu käyttöön
   
 
+## Viikko 5
+
+- Käyttäjä voi nyt saada Williams R analyysia analysoitavista osakkeista, jossa tunnistetaan osakkeiden ylimyyntisyyttä ja yliostettavuutta.
+- Kasvatettu koodin testikattavuutta
+- Yhdistetty Williams R laskenta käyttöliittymään
+- Lintattu koodia
 
 
