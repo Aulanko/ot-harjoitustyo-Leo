@@ -28,7 +28,7 @@ flowchart TD
 
 ### Williams R laskenta ominaisuus. Socellus laskee indikaattorin osakkeiden yliostetuuden ja ylimyytyneisyyden tunnistamiseksi:
 
-```mermaid
+
 sequenceDiagram
     participant Käyttöliittymä
     participant StockAnalysis
