@@ -24,6 +24,10 @@ flowchart TD
         E
         F
     end
+ ```
+
+
+### Williams R laskenta ominaisuus. Socellus laskee indikaattorin osakkeiden yliostetuuden ja ylimyytyneisyyden tunnistamiseksi:
 
 
 ```mermaid
@@ -33,8 +37,10 @@ sequenceDiagram
     participant StockRepository
     participant YahooFinance
 
-    Käyttöliittymä->>StockAnalysis: laske_yliostettu_ja_ylimyyty(symbol)
-    StockAnalysis->>StockRepository: hae_historiset_tiedot(symbol, "1kk", "1pv")
+    Käyttöliittymä->>StockAnalysis: laske yliostettu ja ylimyyty(symbolille)
+    StockAnalysis->>StockRepository: hae historiset tiedot(osake nimi, kuinka pitkältä: "1kk", data pisteiden aikaväli: "1pv")
     StockRepository->>YahooFinance: hae historialliset tiedot
     YahooFinance-->>StockRepository: hintadata
     StockRepository-->>StockAnalysis: DataFrame
+    StockAnalysis->>StockAnalysis: laske Williams %R
+    StockAnalysis-->>Käyttöliittymä: williams r arvo

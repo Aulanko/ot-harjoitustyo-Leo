@@ -12,6 +12,8 @@ Tässä on normaalia tekstiä  **boldattuna** ja tässä tekstiä *kursivoituna*
 
 ### [Vaatimusmäärittely](./documentation/vaatimusmaarittely.md)
 
+### [Arkkitehtuurikuvaus](./documentation/arkkitehtuuri.md)
+
 ### [Tuntikirjanpito](./documentation/tuntikirjanpito.md)
 
 ### [Changelog](./documentation/changelog.md)
