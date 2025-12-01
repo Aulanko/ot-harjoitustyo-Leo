@@ -24,3 +24,17 @@ flowchart TD
         E
         F
     end
+
+
+```mermaid
+sequenceDiagram
+    participant Käyttöliittymä
+    participant StockAnalysis
+    participant StockRepository
+    participant YahooFinance
+
+    Käyttöliittymä->>StockAnalysis: laske_yliostettu_ja_ylimyyty(symbol)
+    StockAnalysis->>StockRepository: hae_historiset_tiedot(symbol, "1kk", "1pv")
+    StockRepository->>YahooFinance: hae historialliset tiedot
+    YahooFinance-->>StockRepository: hintadata
+    StockRepository-->>StockAnalysis: DataFrame

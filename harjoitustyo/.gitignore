@@ -11,3 +11,5 @@ src/visual.py
 
 stocks.db
 
+test_finance_api.py
+
