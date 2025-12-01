@@ -3,7 +3,7 @@
 import unittest
 from unittest.mock import Mock, patch
 from src.analysis.analyzer import StockAnalysis
-from src.models.stock import  StockSummary, DataFactory, StockData
+from src.models.stock import  StockSummary, StockData
 from src.repositories.stock_repo import StockRepository
 from datetime import datetime, timedelta
 import pandas as pd
