@@ -21,6 +21,7 @@ Tässä on normaalia tekstiä  **boldattuna** ja tässä tekstiä *kursivoituna*
 
 
 ### Asenna riippuvuudet komennolla:
+(sitä ennen varmista, että poetry on ladattuna ja python version on >=3.11)
 
 ```
 poetry install
