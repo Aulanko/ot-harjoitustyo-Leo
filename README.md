@@ -28,7 +28,7 @@ poetry install
 ```
 
 ### Käynnistä sovellus komennolla:
-
+(huom, jos käynnistää ensimmäistä kertaa, niin voi kestää pieni tovi, että ohjelma käynnistyy, sama pätee kun painaa analyze nappia)
 ```
 poetry run invoke start
 ```
