@@ -12,11 +12,12 @@ class Test_Stock_Repository(unittest.TestCase):
 
     
     def test_init_database(self):
-        try:
-            repo = StockRepository(db_path=":memory:")
-            self.assertIsInstance(repo, StockRepository)
-        except Exception as e:
-            self.fail(f"StockRepository failed to initialize: {e}")
+        repo = StockRepository(db_path=":memory:")
+        self.assertIsInstance(repo, StockRepository)
+        
+
+        
+
 
 
 
