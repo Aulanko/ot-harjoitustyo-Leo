@@ -14,6 +14,8 @@ class Test_Stock_Repository(unittest.TestCase):
     def test_init_database(self):
         repo = StockRepository(db_path=":memory:")
         self.assertIsInstance(repo, StockRepository)
+
+    
         
 
         
