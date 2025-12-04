@@ -15,9 +15,6 @@ class Test_StockAnalysis(unittest.TestCase):
         self.analyzer = StockAnalysis(self.mock)
         self.symbols = ["AAPL", "GOOGL", "MSFT"]
 
-      
-        
-
 
     def test_get_current_data_for_multiple_symbols(self):
         mocks = {
