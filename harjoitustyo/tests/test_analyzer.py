@@ -38,6 +38,8 @@ class Test_StockAnalysis(unittest.TestCase):
 
         vast = self.analyzer.get_current_data_for_multiple_symbols(symbols=self.symbols)
 
+        
+
         self.assertIsInstance(vast,dict)
         self.assertEqual(vast["GOOGL"].close,148.0)
         self.assertEqual(vast["AAPL"].close,2780.0)
@@ -45,6 +47,10 @@ class Test_StockAnalysis(unittest.TestCase):
         self.assertIn("AAPL",vast)
         self.assertIn("GOOGL",vast)
         self.assertIn("MSFT",vast)
+
+  
+
+
         
 
     def test_get_histrical_data_analysis(self):
@@ -108,6 +114,27 @@ class Test_StockAnalysis(unittest.TestCase):
         vast = self.analyzer.calculate_over_bought_and_oversold("GOOGL")
     
         self.assertEqual(test_williams_r,vast)
+
+    def test_empty_on_historical(self):
+        his_data = Mock()
+        his_data.empty = True
+        self.mock.get_historical_data.return_value = his_data
+        vast = self.analyzer.get_histrical_data_analysis("AAPL")
+        self.assertIsNone(vast)
+
+    def test_get_multiple_symbols_failifng(self):
+
+        self.mock.get_multiple_current_data.side_effect = ConnectionError("Error networking")
+
+        vast = self.analyzer.get_current_data_for_multiple_symbols(symbols=self.symbols)
+        self.assertIsNone(vast)
+
+    def test_hist_dataa_erro(self):
+        self.mock.get_historical_data.side_effect = ValueError("Opaa, invalidi symbol")
+        vast = self.analyzer.get_histrical_data_analysis("Inva leadi")
+        self.assertIsNone(vast)
+
+
 
         
 

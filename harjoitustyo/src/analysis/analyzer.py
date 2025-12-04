@@ -65,3 +65,5 @@ class StockAnalysis:
                       (highest_high-lowest_low))*-100
 
         return williams_r
+    
+    
