@@ -20,5 +20,6 @@
 | 28.11. | 1.5h    | Koodin linttaamista ja testien tekemistä |
 | 29.11. | 2h    | Koodin linttaamista |
 | 30.11. | 4h    | Koodin linttaamista, rakenteiden parantamista ja arkkitehtuurikaavion tekemistä |
-| Yhteensä | 77h  | 
+| 1.12. | 1h    | Koodin siivoamista (ei käytettyjen tiedostojen ja niiden testien poistamista) |
+| Yhteensä | 78h  | 
 
