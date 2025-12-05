@@ -1,9 +1,10 @@
 
 import unittest
 from unittest.mock import Mock, patch
-from src.repositories.stock_repo import StockRepository, InvalidSymbol, StockData, DataFactory
-import pandas as pd
-import yfinance as yf
+from src.repositories.stock_repo import StockRepository
+
+
+
 
 
 class Test_Stock_Repository(unittest.TestCase):
