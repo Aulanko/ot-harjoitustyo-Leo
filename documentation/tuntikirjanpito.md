@@ -23,5 +23,7 @@
 | 1.12. | 1h    | Koodin siivoamista (ei käytettyjen tiedostojen ja niiden testien poistamista) |
 | 3.12. | 2h    | Koodin siivoamista ja testikattavuuden lisäämistä |
 | 4.12. | 2h    | Koodin siivoamista ja testikattavuuden lisäämistä |
-| Yhteensä | 82h  | 
+| 5.12. | 0.5h    | testikattavuuden lisäämistä |
+| 5.12. | 0.5h    | testikattavuuden lisäämistä |
+| Yhteensä | 83h  | 
 
