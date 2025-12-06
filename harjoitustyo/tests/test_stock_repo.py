@@ -44,8 +44,17 @@ class Test_Stock_Repository(unittest.TestCase):
 
         with self.assertRaises(InvalidSymbol):
             self.assertIsNone(self.repo.get_current_data(symbol=None))
+
+    def test_get_cached_current_data(self):
+        self.repo._get_from_cache = Mock(return_value=None)
+        vast = self.repo._get_cached_current_data("AAPL")
+        self.assertIsNone(vast)
+
         
+
+    
         
+
 
 
 
