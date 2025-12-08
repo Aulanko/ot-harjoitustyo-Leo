@@ -18,6 +18,11 @@ from models.stock import StockData, DataFactory
 
 
 class SpotStockDataError(Exception):
+    """
+    Virheiden käsittelyä tehty luokka, jota käytetään, 
+    jos tulee osakedatan käsittelyn kanssa ongelmia
+    """
+
     def __init__(self, symbol: str, message: str = None):
         self.symbol = symbol
         self.message = message or \
@@ -32,6 +37,10 @@ class SpotStockDataError(Exception):
 
 
 class DataSourceFailed(Exception):
+    """
+    Virheiden käsittelyluokka, jota käytetään jos datan hakemisen kanssa tulee ongelmia
+    """
+
     def __init__(self, source=None, message: str = None):
         self.source = source
         self.message = message or f"An error occured when trying to fetch data from: {self.source}"
@@ -45,6 +54,10 @@ class DataSourceFailed(Exception):
 
 
 class InvalidSymbol(Exception):
+    """
+    Virheiden käsittely luokka, jota käytetään jos osakesymbolien kanssa tulee ongelmia
+    """
+
     def __init__(self, symbol, message: str = None):
         self.symbol = symbol
         self.message = message
@@ -58,6 +71,10 @@ class InvalidSymbol(Exception):
 
 
 class BaseStockClass(ABC):
+    """
+    Pakollinen perusrakenne luokka,
+    jota käytetään perustus luokkana ja pohjana osake datan noutamis luokkaa varten
+    """
 
     @abstractmethod
     def get_current_data(self, symbol: str, ) -> Optional[StockData]:
@@ -77,6 +94,11 @@ class BaseStockClass(ABC):
 
 
 class StockRepository(BaseStockClass):
+    """
+    Hoitaa datan hakemista yfinance kirjaston avulla, ja varastoi sitä välimuistiin tai/ja
+    tietokantaan
+    """
+
     def __init__(self, db_path="stocks.db", cache_enabled: bool = True):
         self.logger = logging.getLogger(__name__)
         self.cache_enabled = cache_enabled

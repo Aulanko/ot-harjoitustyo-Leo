@@ -10,6 +10,9 @@ from PyQt6.QtCore import Qt
 
 
 class GetImmediateInfo(QWidget):
+    """
+    Hoitaa käyttöliittymää ylhäällä näkyvistä hinta muutoksista käyttöliittymässä
+    """
 
     def __init__(self, symbol: str, price: float, change: float):
         super().__init__()

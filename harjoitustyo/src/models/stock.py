@@ -9,6 +9,10 @@ from datetime import datetime
 
 @dataclass
 class StockData:
+    """
+    Dataclass luokka, jolla luodaan perus toiminnallisuutta ja jäsentyvyytta osake datalle.
+
+    """
     symbol: str
     timestamp: datetime
     high: float
@@ -18,6 +22,9 @@ class StockData:
     volume: int = 0
 
     def to_dict(self) -> Dict:
+        """
+        Muuntaa luokalle alustetun datan kirjastoksi
+        """
         return {
             "symbol": self.symbol,
             "timestamp": self.timestamp.isoformat(),
@@ -29,6 +36,9 @@ class StockData:
         }
 
     def __post_init__(self):
+        """
+        Kutsuu validoinnin alustuksen jälkeen
+        """
         self.validate()
 
     def validate(self):
@@ -61,6 +71,9 @@ class StockData:
 
 @dataclass
 class StockSummary:
+    """
+    Dataclass luokka, jota käytetään osakedatan selosteen tekemiseen. 
+    """
 
     symbol: str
     timestart: datetime
@@ -85,6 +98,9 @@ class StockSummary:
 
 @dataclass
 class DataFactory():
+    """
+    Dataclass luokka, jota käytetään Seloste- ja osakedata-olioiden tekemiseen
+    """
 
     @staticmethod
     def create_stock_data_from_yf(symbol: str, yf_data) -> StockData:

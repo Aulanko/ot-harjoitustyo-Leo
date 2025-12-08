@@ -8,6 +8,10 @@ from repositories.stock_repo import StockRepository
 
 
 class StockAnalysis:
+    """
+    Tätä luokkaa käytetään datan analysoimis toimintojen jäsentämiseen, ja sen
+     metodeja analysointiin luonnollisesti.
+    """
 
     def __init__(self, repo: StockRepository):
         self.repo = repo
