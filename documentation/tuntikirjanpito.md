@@ -25,5 +25,6 @@
 | 4.12. | 2h    | Koodin siivoamista ja testikattavuuden lisäämistä |
 | 5.12. | 0.5h    | testikattavuuden lisäämistä |
 | 6.12. | 0.5h    | testikattavuuden lisäämistä |
-| Yhteensä | 83h  | 
+| 8.12. | 1.5h    | uuden moving averages laskenta toiminnallisuuden tekeminen, perus testi siihen, docstring dokumentaation laittamista luokkiin |
+| Yhteensä | 84.5h  | 
 
