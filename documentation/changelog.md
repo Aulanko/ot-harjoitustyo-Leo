@@ -28,4 +28,11 @@
 - Yhdistetty Williams R laskenta käyttöliittymään
 - Lintattu koodia
 
+## Viikko 6
+
+- Käyttäjä voi nyt saada Moving Averages analyysia analysoitavista osakkeista, jossa seurataan osakkeiden keskihinnan vaihtelua.
+- Kasvatettu koodin testikattavuutta
+- Yhdistetty "Simple Moving Averages" laskenta käyttöliittymään
+- Lintattu koodia
+
 
