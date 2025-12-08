@@ -65,5 +65,18 @@ class StockAnalysis:
                       (highest_high-lowest_low))*-100
 
         return williams_r
-    
-    
+
+    def calculate_moving_averages(self, symbol: str):
+        data_from_last_20_days = self.repo.get_historical_data(
+            symbol=symbol, period="200d", interval="1d"
+        )
+
+        closed_list20 = data_from_last_20_days["Close"].tail(20).mean()
+        closed_list50 = data_from_last_20_days["Close"].tail(50).mean()
+        closed_list200 = data_from_last_20_days["Close"].mean()
+
+        return {
+            "closed_list20": closed_list20,
+            "closed_list50": closed_list50,
+            "closed_list200": closed_list200
+        }

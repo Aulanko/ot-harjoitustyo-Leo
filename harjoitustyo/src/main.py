@@ -183,9 +183,16 @@ class MainWindow(QMainWindow):
 
                 williams_r = self.analyzer.calculate_over_bought_and_oversold(
                     symbol)
+
                 analysis_texti += "Williams Percent Range (-100 to 0).\
                 -50 as the middle point. Under it -> more oversold, over it -> more over bought\n"
                 analysis_texti += f"for stock: {symbol}, we got: {williams_r}\n\n"
+
+                sma = self.analyzer.calculate_moving_averages(symbol)
+                analysis_texti += f"For symbol: {symbol}. \n Moving averages of 20 days:\
+                {sma["closed_list20"]} \n"
+                analysis_texti += f"Moving averages of 50 days: {sma["closed_list50"]}\n"
+                analysis_texti += f"Moving averages of 200 days: {sma["closed_list200"]}\n\n"
 
         self.data_display.setText(texti)
         self.analysis_display.setText(analysis_texti)
