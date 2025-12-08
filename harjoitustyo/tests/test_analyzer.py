@@ -131,6 +131,18 @@ class Test_StockAnalysis(unittest.TestCase):
         vast = self.analyzer.get_histrical_data_analysis("Inva leadi")
         self.assertIsNone(vast)
 
+    def test_calculate_simple_moving_averages(self):
+        
+        closet = range(80,130)
+        mock_data = pd.DataFrame({
+            "Close":closet
+        })
+
+        self.mock.get_historical_data.return_value = mock_data
+        vast = self.analyzer.calculate_moving_averages("AAPL")
+        self.assertIsNotNone(vast)
+        self.assertIsInstance(vast,dict)
+
 
 
         
