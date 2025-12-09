@@ -223,6 +223,19 @@ class StockRepository(BaseStockClass):
             period: str = "1mo",
             interval: str = "1d"
     ) -> pd.DataFrame:
+        """
+
+        Args:
+        symbol: osakkeen symboolinen nimi esim. AAPL (Apple) tai GOOGL (Google)
+       
+        period:Kuinka pitkältä jaksolta, verrattuna nykyhetkeen, haetaan historiallista dataa 
+        
+        interval: Minkä aika yksiköiden välein kerätään historiallista dataa
+          kyseiseltä jaksolta
+        
+        return: palauttaa pandas DataFramen, jossa osakkeesta tietoja period ajan takaa ja
+        interval aikavälien välein. 
+        """
 
         try:
             ticker = yf.Ticker(symbol)
@@ -241,6 +254,14 @@ class StockRepository(BaseStockClass):
             ) from e
 
     def get_multiple_current_data(self, symbols: List[str],) -> Dict[str, Optional[StockData]]:
+        """
+       
+        Args:
+        symbols: Lista symboleita, osakenimi muodossa ["AAPL", "GOOGL"]
+        
+        return: palauttaa kirjaston, jossa osakkeen nimet avaimina, ja StockData olio arvona
+        
+        """
         results = {}
 
         for symbol in symbols:
@@ -273,6 +294,26 @@ class StockRepository(BaseStockClass):
                 "Failed to save stock data into the Stock_hist table: %s", e)
 
     def get_historical_timeframe_data(self, symbol: str, start_date: str, end_date: str, interval):
+        """
+        Samantyylinen kuin get_historical_data metodi, mutta osaa hakea dataa
+        määriteltyn aloitus päivän ja lopetus päivän väliltä.
+        Sen sijasta, että rinnastaisi nykyhetkestä
+
+        Args:
+        symbol: osakkeen symboolinen nimi esim. AAPL (Apple) tai GOOGL (Google)
+       
+        start_date: aloitus päivämäärä
+
+        end_data: lopetus päivämäärä 
+        
+        interval: Minkä aika yksiköiden välein kerätään historiallista dataa
+          kyseiseltä jaksolta
+        
+        return: palauttaa pandas DataFramen, jossa osakkeesta tietoja
+          aloituksen ja lopetuksen väliltä, 
+        interval aikavälien välein. 
+
+        """
         try:
             ticker = yf.Ticker(symbol)
             time_frame = ticker.history(

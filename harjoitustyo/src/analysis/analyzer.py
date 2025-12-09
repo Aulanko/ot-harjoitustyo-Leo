@@ -21,6 +21,10 @@ class StockAnalysis:
             self,
             symbols: List[str]
     ) -> Dict[str, Optional[StockData]]:
+        """
+        Hakee hintadataa useammasta osakkeesta ja palauttaa kirjaston, jossa on
+        laitettu osakkeen nimi avaimeksi ja hintadata luokka arvoksi
+        """
         try:
             res = self.repo.get_multiple_current_data(symbols)
             real_results = {symbol: data for symbol,
@@ -32,6 +36,10 @@ class StockAnalysis:
             return None
 
     def get_histrical_data_analysis(self, symbol: str, period: str = "1mo") -> StockSummary:
+        """
+        Hakee hintadataa osakkeelle nykyisestä päivästä periodin verran taaksepäin
+        palauttaa StockSummary olion
+        """
         try:
             historical_data = self.repo.get_historical_data(symbol, period)
             if historical_data.empty:
@@ -57,6 +65,13 @@ class StockAnalysis:
             return None
 
     def calculate_over_bought_and_oversold(self, symbol: str):
+        """
+        Laskee williams %R kaavan perusteella, osakkeen yli- ostettuvuuden/myytyvyyden
+        joka antaa arvon 0 ja -100 väliltä, jossa -50 keski kohta.
+        Lähemmäksi nollaa->yli ostettu
+        Lähemmäksi -100 -> yli myyty
+
+        """
         data_from_last_14_days = self.repo.get_historical_data(
             symbol=symbol, period="14d", interval="1d")
         current_data = self.repo.get_current_data(symbol=symbol)
@@ -71,6 +86,9 @@ class StockAnalysis:
         return williams_r
 
     def calculate_moving_averages(self, symbol: str):
+        """
+        Laskee osakkeen hinnan keskiarvon 20, 50 ja 200 päivää taaksepäin nykyhetkestä.
+        """
         data_from_last_200_days = self.repo.get_historical_data(
             symbol=symbol, period="200d", interval="1d"
         )

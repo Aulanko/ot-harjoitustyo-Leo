@@ -26,7 +26,26 @@ from ui.get_immeadiate_info import GetImmediateInfo
 
 
 class MainWindow(QMainWindow):
+    """
+    Tämä luokka on vastuussa suurimmilta osin käyttöliittymän rakentamisesta ja
+    yhdistää toiminnallisia luokkia käyttöliittymään.
+    """
     def __init__(self):
+        """
+        
+        
+        Args:
+            current_symbols: Alustavat osakesymbolit
+            logger: debuggaukseen tarkoitettu loggeri
+            data_ticker_widgets: ylläpitää osakesymbolien ja "välittömän" infon arvon välistä
+            suhdetta.
+            symbols: symbolit, joita käytetään koodissa
+            new_symbol: uuden symbolin luontia varten varastointi muuttujaan
+            price_chart: Kuvaaja, joka tulee visualisoimaan osakkeiden hintoja pylväs diagrammina
+            data_display: näyttää yksityiskohtaisempaa raakadataa osakkeista
+            analysis_display: näyttää teknisempiä analyysi tuloksia (esim Williams %R)
+        
+        """
         super().__init__()
         self.current_symbols = ["AAPL", "GOOGL"]
 
@@ -42,6 +61,9 @@ class MainWindow(QMainWindow):
         self.set_ui_up()
 
     def set_ui_up(self):
+        """
+        Alustaa käyttöliittymän + vasemman ja oikean paneelin asettelun.
+        """
         self.setWindowTitle("Stock data application")
 
         center_widget = QWidget()
@@ -56,6 +78,10 @@ class MainWindow(QMainWindow):
         main_layout.addWidget(right_panel)
 
     def create_left_panel(self):
+        """
+        Luo vasemman puoleisen paneelin, jossa symbolien syöttämisen,
+        lisäämisen ja analyysin käynnistämisen toiminnot.
+        """
         panel = QWidget()
         layout = QVBoxLayout()
         panel.setLayout(layout)
@@ -86,6 +112,10 @@ class MainWindow(QMainWindow):
         return panel
 
     def create_right_panel(self):
+        """
+        Luo oikean puoleista paneelia, jossa osaketietojen "hätä" tiedot, hintakuvaajan,
+        raaka-datan ja analyysitulosten näyttöalueet
+        """
         panel = QWidget()
         layout = QGridLayout()
         panel.setLayout(layout)
@@ -111,6 +141,10 @@ class MainWindow(QMainWindow):
         return panel
 
     def add_ticker_widget(self, symbol: str):
+        """
+        Luo ja lisää uuden GetImmediateInfon ticker widget yläinfoon kun käyttäjä lisää
+        uuden osakkeen
+        """
         tick = GetImmediateInfo(symbol, 0, 0)
         self.data_ticker_widgets[symbol] = tick
 
@@ -121,6 +155,10 @@ class MainWindow(QMainWindow):
         layout.addWidget(tick, 0, col)
 
     def handle_add_symbol(self):
+        """
+        Päivittää nykyisten symbolien tilaa uudella symbolilla 
+        + validoi symbolia. 
+        """
         symbol = self.new_symbol.text().strip().upper()
         if symbol in self.current_symbols:
             return
@@ -145,6 +183,9 @@ class MainWindow(QMainWindow):
         self.new_symbol.clear()
 
     def refresh_data(self):
+        """
+        Päivittää paneeleja ja tekstikenttiä + kuvaajan, nykyisen datan mukaan
+        """
         try:
             current_data = self.analyzer.get_current_data_for_multiple_symbols(
                 self.current_symbols)
@@ -156,6 +197,9 @@ class MainWindow(QMainWindow):
             self.logger.warning("error on refresh_data: %s", e)
 
     def update_data_ticker_widgets(self, stock_data: Dict[str, StockData]):
+        """
+        Päivittää yläinfossa olevien hintojen muutoksia. 
+        """
 
         for symbol, data in stock_data.items():
             if data and symbol in self.data_ticker_widgets:

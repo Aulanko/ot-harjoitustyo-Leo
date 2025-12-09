@@ -12,6 +12,14 @@ class StockData:
     """
     Dataclass luokka, jolla luodaan perus toiminnallisuutta ja jäsentyvyytta osake datalle.
 
+    symbol: osakkeen symboolinen nimi esim. AAPL (Apple) tai GOOGL (Google)
+    timestamp: aikaleima
+    high: osakkeen korkein arvo kyseisellä aikaleimalla
+    low: osakkeen alin arvo kyseisellä aikaleimalla
+    open_price: osakkeen hinta kyseisen aikaleiman alussa
+    close: osakkeen hinta kyseisen aikaleiman lopulla
+    volume: kuinka monta osaketta vaihdettiin kyseisellä aikaleimalla
+
     """
     symbol: str
     timestamp: datetime
@@ -73,6 +81,15 @@ class StockData:
 class StockSummary:
     """
     Dataclass luokka, jota käytetään osakedatan selosteen tekemiseen. 
+    
+    symbol: osakkeen symboolinen nimi esim. AAPL (Apple) tai GOOGL (Google)
+    timestart: aloitus aikaleima ( eli päivämäärä, aika jne.)
+    time_end: lopetus aikaleima
+    high: osakkeen korkein arvo aloitus ja lopetus aikaleimojen välissä
+    low: osakkeen alin arvo aloitus ja lopetus aikaleimojen välissä
+    open_price: osakkeen arvo kyseisen ajan jakson alussa
+    data_points: kuinka monta datapistettä kyseisessä osake selosteessa oli
+
     """
 
     symbol: str
