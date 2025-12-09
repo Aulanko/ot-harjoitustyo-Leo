@@ -26,5 +26,6 @@
 | 5.12. | 0.5h    | testikattavuuden lisäämistä |
 | 6.12. | 0.5h    | testikattavuuden lisäämistä |
 | 8.12. | 1.5h    | uuden moving averages laskenta toiminnallisuuden tekeminen, perus testi siihen, docstring dokumentaation laittamista luokkiin |
-| Yhteensä | 84.5h  | 
+| 9.12. | 1.5h    | Käyttöohjeen tekemistä ja docstring dokumentaation tekemistä koodiin |
+| Yhteensä | 86h  | 
 
