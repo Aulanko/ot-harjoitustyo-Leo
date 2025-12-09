@@ -44,3 +44,11 @@ sequenceDiagram
     StockRepository-->>StockAnalysis: DataFrame
     StockAnalysis->>StockAnalysis: laske Williams %R
     StockAnalysis-->>Käyttöliittymä: williams r arvo
+
+    Käyttöliittymä->>StockAnalysis: laske liikkuvat keskiarvot(symbolille)
+    StockAnalysis->>StockRepository: hae historiset tiedot(osake nimi, kuinka kaukaa:"200pv", data pisteiden aikaväli="1pv")
+    StockRepository->>YahooFinance: hae historialliset tiedot
+    YahooFinance-->>StockRepository: hintadata
+    StockRepository-->>StockAnalysis: DataFrame
+    StockAnalysis->>StockAnalysis: laske 20,50 ja 200 päivän keskiarvot
+    StockAnalysis-->>Käyttöliittymä: liikkuvat keskiarvot
