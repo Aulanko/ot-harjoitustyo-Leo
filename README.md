@@ -19,6 +19,8 @@ Tässä on normaalia tekstiä  **boldattuna** ja tässä tekstiä *kursivoituna*
 ### [Changelog](./documentation/changelog.md)
 
 
+# Osake applikaatio. 
+#### Tämä applikaatio hakee verkosta live osakedataa ja tekee niistä analyyseja sekä hinta vertailua. Käyttäjä voi hakea haluamastaan osakkeestaan hinta-dataa
 
 ### Asenna riippuvuudet komennolla:
 (sitä ennen varmista, että poetry on ladattuna ja python version on >=3.11)
