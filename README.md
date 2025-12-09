@@ -8,7 +8,7 @@ Tässä on normaalia tekstiä  **boldattuna** ja tässä tekstiä *kursivoituna*
 
 
 
-### [Käyttöohje](./harjoitustyo/README.md)
+### [Käyttöohje](./documentation/kayttoohje.md)
 
 ### [Vaatimusmäärittely](./documentation/vaatimusmaarittely.md)
 
