@@ -60,6 +60,14 @@ class StockData:
 
     @classmethod
     def create_stock_data_from_dict(cls, data: Dict) -> "StockData":
+        """
+        Luokan metodi, joka muuntaa sanakirjasta saadut datat StockData olioksi
+
+        Args:
+        cls: luokan viittaus(StockData) Tämä mahdollistaa luokan sisätä käsin uuden
+        luokka instanssin tekemisen ilman suoraa luokan nimen käyttöä
+        data: kirjasto, jossa StockData olion kentät(timestamp, close, volume jne.)
+        """
         data = data.copy()
         if isinstance(data["timestamp"], str):
             data["timestamp"] = datetime.fromisoformat(data["timestamp"])
@@ -133,6 +141,10 @@ class DataFactory():
 
     @staticmethod
     def stock_data_summary(symbol: str, data_points: list[StockData]) -> StockSummary:
+        """
+        Saattinen metodi, joka tiivistää Stockdata olio listan yhdeksi StockSummary olioksi
+        Laskee aloitusajan, lopetusajan, high, low, jne. arvot listan mukaisesti
+        """
 
         if not data_points:
             raise ValueError(f"No data points were provided to the stock_data_summary method,\
