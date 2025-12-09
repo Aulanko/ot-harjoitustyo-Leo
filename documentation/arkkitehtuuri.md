@@ -5,6 +5,7 @@
 ```mermaid
 flowchart TD
     A[Käyttöliittymä<br>PyQt6] --> B[Toimintalogiikka<br>StockAnalysis]
+    A[Käyttöliittymä<br>PyQt6] --> G[Datamallit, <br>StockData, StockSummary]
     B --> C[Datakerros<br>StockRepository]
     C --> D[Ulkoiset rajapinnat<br>Yahoo Finance]
     
