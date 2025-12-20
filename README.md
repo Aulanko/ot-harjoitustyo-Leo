@@ -42,7 +42,7 @@ poetry run invoke test
 
 ### Coverage-raportti
 ```
-poetry run invoke coverage_report
+poetry run invoke coverage-report
 ```
 
 ### Linttaus
@@ -53,5 +53,5 @@ poetry run invoke lint
 
 ### Koodin linttauksen formatointia
 ```
-poetry run invoke format_for_lint
+poetry run invoke format-for-lint
 ```
