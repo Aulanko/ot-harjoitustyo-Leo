@@ -26,7 +26,7 @@ Lähtökohtaisesti ei ole erilaisia käyttäjä rooleja.
 * Käyttäjä voi valita useampia osakkeita, ja saada niistä vertailu visualisoinnin. (hyvin alkeellinen versio tehty )
 * Haettuun dataan sovellettaisiin tilastotieteellistä laskentaa. (esim korrelaation tai minkälaista jakaumaa kasvu näyttäisi noudattavan)
 * Soveltaa yliopistossa kehitelyä uutta "haulikko" menetelmää löytääkseen osakkeita, joilla olisi korrelaatiota keskenään.
-* Soveltaa jonkinlaista algoritmia jalostaakseen tietoa saadusta datasta. (tavallaan tehty? Sovellettu Williams R osakelaskennan kaavaa koodiin toimivaksi ominaisuudeksi)
+* Soveltaa jonkinlaista algoritmia jalostaakseen tietoa saadusta datasta. (perustasolla tehty. Sovellettu Williams R ja moving averages osakelaskennan kaavaa koodiin toimivaksi ominaisuudeksi)
   
 
 
